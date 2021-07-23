@@ -10,6 +10,8 @@ import {
   Badge,
   Icon,
   Center,
+  ZStack,
+  Container,
 } from "native-base";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -61,166 +63,180 @@ export default function PersonDetailScreen({ navigation }) {
       <View style={styles.container}>
         <VStack h="100%" w="100%">
           <Image
-            h="50%"
+            // flex={1}
+            // resizeMode="cover"
             w="100%"
-            // style={{ width: "100%", height: "100%" }}
+            h="45%"
             alt="DisplayPicture"
             source={require("../assets/images/asian-elderly-woman-feeling-happy-smiling-looking-camera-while-relax-kitchen-home.png")}
           />
-          <Box
-            bg="#EFB556"
-            rounded="xl"
-            p={8}
-            style={{
-              //   position: "absolute",
-              marginTop: "-10%",
-              zIndex: 10,
-              width: "100%",
-              height: "25%",
-              borderRadius: 40,
-            }}
-          >
-            <Text
+          <VStack h="100%" w="100%" alignItems="flex-start">
+            <Box
+              bg="#EFB556"
+              borderTopRadius={25}
+              paddingLeft={8}
+              py={5}
+              h={160}
+              w="100%"
+              alignItems="flex-start"
               style={{
-                fontSize: 36,
-                fontFamily: "Avenir",
-                fontWeight: "800",
-                color: "#ffffff",
-                marginLeft: "3%",
-                marginBottom: "1%",
+                //   position: "absolute",
+                marginTop: "-10%",
+                // zIndex: 10,
+                // borderRadius: 40,
               }}
             >
-              Morikawa
-            </Text>
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: "Avenir",
-                fontWeight: "500",
-                color: "#ffffff",
-                marginLeft: "3%",
-              }}
-            >
-              Languages:
-            </Text>
-            <ScrollView
-              horizontal={true}
-              width="80%"
-              style={{ marginLeft: "3%" }}
-              showsHorizontalScrollIndicator={false}
-            >
-              <HStack
-                space={4}
-                width="80%"
-                height="80%"
+              <Text
                 style={{
-                  justifyContent: "flex-start",
-                  alignItems: "center",
+                  fontSize: 36,
+                  fontFamily: "Avenir",
+                  fontWeight: "800",
+                  color: "#ffffff",
+                  marginLeft: "3%",
+                  marginBottom: "1%",
                 }}
               >
-                {languages.map((language, index) => (
-                  <Badge
-                    bg="#ffffff"
-                    variant={"outline"}
-                    colorScheme={index == 0 ? "orange" : "light"}
-                    style={{
-                      alignItems: "center",
-                      minWidth: 80,
-                      padding: 12,
-                      paddingLeft: 12,
-                      paddingRight: 12,
-                      // paddingBottom: 0,
-                      borderRadius: 20,
-                    }}
-                  >
-                    {language}
-                  </Badge>
-                ))}
-              </HStack>
-            </ScrollView>
-          </Box>
-          <Box
-            bg="#ffffff"
-            rounded="xl"
-            p={8}
-            flex={1}
-            style={{
-              //   position: "absolute",
-              marginTop: "-10%",
-              zIndex: 20,
-              width: "100%",
-              height: "100%",
-              borderRadius: 20,
-              //   display: "flex",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 24,
-                fontFamily: "Avenir",
-                fontWeight: "300",
-                color: "#46454C",
-                marginLeft: "3%",
-                marginBottom: "1%",
-              }}
-            >
-              About
-            </Text>
-            <ScrollView
-              horizontal={true}
-              width="100%"
-              style={{ marginLeft: "3%" }}
-              showsHorizontalScrollIndicator={false}
-            >
-              <HStack
-                space={4}
-                width="80%"
-                height="40%"
+                Morikawa
+              </Text>
+              <Text
                 style={{
-                  justifyContent: "flex-start",
-                  alignItems: "flex-start",
+                  fontSize: 18,
+                  fontFamily: "Avenir",
+                  fontWeight: "500",
+                  color: "#ffffff",
+                  marginLeft: "3%",
                 }}
               >
-                {interests.map((interest, index) => (
-                  <Badge
-                    variant={"outline"}
-                    bg="#ffffff"
-                    colorScheme="orange"
+                Languages:
+              </Text>
+              <Container h={12}>
+                <ScrollView
+                  horizontal={true}
+                  // height="60%"
+                  style={{
+                    marginLeft: "3%",
+                    marginBottom: "1%",
+                    width: "100%",
+                  }}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  <HStack
+                    space={4}
+                    width="100%"
+                    // height="80%"
                     style={{
+                      justifyContent: "flex-start",
                       alignItems: "center",
-                      minWidth: 80,
-                      padding: 12,
-                      paddingLeft: 12,
-                      paddingRight: 12,
-                      // paddingBottom: 0,
-                      borderRadius: 20,
                     }}
                   >
-                    {interest}
-                  </Badge>
-                ))}
-              </HStack>
-            </ScrollView>
-            <Text
+                    {languages.map((language, index) => (
+                      <Badge
+                        bg="#ffffff"
+                        variant={"outline"}
+                        colorScheme={index == 0 ? "orange" : "light"}
+                        style={{
+                          alignItems: "center",
+                          minWidth: 80,
+                          padding: 12,
+                          paddingLeft: 12,
+                          paddingRight: 12,
+                          // paddingBottom: 0,
+                          borderRadius: 20,
+                        }}
+                      >
+                        {language}
+                      </Badge>
+                    ))}
+                  </HStack>
+                </ScrollView>
+              </Container>
+            </Box>
+            <VStack
+              bg="#ffffff"
+              rounded="xl"
+              px={8}
+              py={6}
+              flex={1}
+              space={2}
+              w="100%"
+              justifyContent="flex-start"
+              alignItems="flex-start"
               style={{
-                flex: 1,
-                zIndex: 30,
-                fontSize: 16,
-                fontFamily: "Avenir",
-                fontWeight: "300",
-                color: "#46454C",
-                marginLeft: "3%",
-                marginBottom: "1%",
-                marginTop: "-30%",
-                alignItems: "flex-start",
-                justifyContent: "flex-start",
+                // position: "absolute",
+                // marginTop: "-5%",
+                zIndex: 20,
+                // height: "50%",
+                borderRadius: 20,
+                // bottom: "50%",
+                // flex: 1,
+                // display: "flex",
               }}
             >
-              {
-                "I am Morikawa.\nFirst time using this app.\nHope to chat more with our young generation."
-              }
-            </Text>
-          </Box>
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontFamily: "Avenir",
+                  fontWeight: "300",
+                  color: "#46454C",
+                  marginLeft: "3%",
+                  marginBottom: "1%",
+                }}
+              >
+                About
+              </Text>
+
+              <Container h={12}>
+                <ScrollView
+                  horizontal={true}
+                  width="100%"
+                  style={{ marginLeft: "3%" }}
+                  showsHorizontalScrollIndicator={false}
+                >
+                  {interests.map((interest, index) => (
+                    <Badge
+                      variant={"outline"}
+                      bg="#ffffff"
+                      colorScheme="orange"
+                      style={{
+                        alignItems: "center",
+                        minWidth: 80,
+                        padding: 12,
+                        paddingLeft: 12,
+                        paddingRight: 12,
+                        marginRight: 12,
+                        height: 40,
+                        // paddingBottom: 0,
+                        borderRadius: 20,
+                      }}
+                    >
+                      {interest}
+                    </Badge>
+                  ))}
+                </ScrollView>
+              </Container>
+              <Text
+                // flex={1}
+                h="100%"
+                style={{
+                  // flex: 1,
+                  // zIndex: 30,
+                  fontSize: 16,
+                  fontFamily: "Avenir",
+                  fontWeight: "300",
+                  color: "#46454C",
+                  marginLeft: "3%",
+                  marginBottom: "1%",
+                  // marginTop: "-30%",
+                  // alignItems: "flex-start",
+                  // justifyContent: "flex-start",
+                }}
+              >
+                {
+                  "I am Morikawa.\nFirst time using this app.\nHope to chat more with our young generation."
+                }
+              </Text>
+            </VStack>
+          </VStack>
           <Icon
             as={MaterialCommunityIcons}
             name="arrow-left"
