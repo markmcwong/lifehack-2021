@@ -23,7 +23,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="TabFour"
       tabBar={(props) => <MyTabBar {...props} />}
       tabBarOptions={{
         activeTintColor: "#EFB556",

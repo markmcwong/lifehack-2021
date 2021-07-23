@@ -42,10 +42,10 @@ export default function LoginScreen({ navigation }) {
             resizeMode="contain"
             style={styles.logoImage}
             source={require("../assets/images/Login.png")}
-            margin={15}
+            margin={8}
             alt="login"
           />
-          <VStack space={4}>
+          <VStack space={3}>
             <Input
               padding={4}
               placeholder="Please enter your email"
@@ -88,7 +88,7 @@ export default function LoginScreen({ navigation }) {
           >
             Don’t have an account? Create here
           </Text>
-          <HStack width="75%" marginTop={7}>
+          <HStack width="75%" style={{ marginTop: "2.5%" }}>
             <Divider size={2} width="45%" marginTop={3} />
             <Text style={{ ...styles.link, color: "#b9b9b9" }}>OR</Text>
             <Divider size={2} width="45%" marginTop={3} />
@@ -99,7 +99,7 @@ export default function LoginScreen({ navigation }) {
             borderColor="#b9b9b9"
             variant="outline"
             // width="75%"
-            marginTop={6}
+            style={{ marginTop: "2.5%" }}
             startIcon={
               <Icon as={MaterialCommunityIcons} name="google" size={5} />
             }

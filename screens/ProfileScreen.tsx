@@ -1,14 +1,13 @@
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-  Box,
-  Button,
   HStack,
   Icon,
   IconButton,
-  Pressable,
+  Badge,
   StatusBar,
   VStack,
   Text,
+  Image,
 } from "native-base";
 import * as React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,13 +27,15 @@ import { connect } from "react-redux";
 import firebase from "firebase";
 import "firebase/firestore";
 
-export const data = [
-  { name: "Mobile Phone", points: 30 },
-  { name: "Tablet", points: 40 },
-  { name: "Laptop", points: 60 },
-  { name: "Desktop", points: 80 },
-  { name: "Monitor", points: 50 },
-];
+const User = {
+  name: "Robe Jobs",
+  created: "2018-02-21",
+  tags: ["programmer", "developer", "coder"],
+  introduction:
+    "Hello my friends :) I am Robe Jobs, would love to make some new friends while learning some languages! always find elderly like you interesting, as you have SO MUCH experiences and stories that I do not possess! Would always love to chat with you and know more about your lives ;)",
+};
+
+const BadgesColour = ["red", "blue", "yellow", "green", "grey"];
 
 const SecondRoute = (props: any) => (
   <ScrollView>
@@ -42,73 +43,84 @@ const SecondRoute = (props: any) => (
       alignItems="center"
       width={Dimensions.get("window").width}
       height="100%"
-      space={3}
+      space={1}
       marginTop={3}
       paddingBottom={20}
     >
       <ImageBackground
-        resizeMode="contain"
+        borderRadius={35}
+        resizeMode="cover"
         source={require("../assets/images/reward.png")}
         style={styles.rewards}
-      >
-        <VStack space={4}>
-          <Text
-            style={{
-              alignSelf: "center",
-              marginTop: "5%",
-              marginLeft: "-35%",
-              // fontWeight: "bold",
-              color: "white",
-              fontSize: 14,
-            }}
-          >
-            Current Reward Points:
-          </Text>
-          <Text
-            style={{
-              alignSelf: "center",
-              fontWeight: "bold",
-              color: "white",
-              fontSize: 28,
-            }}
-          >
-            {props.reward}
-          </Text>
-        </VStack>
-      </ImageBackground>
+      ></ImageBackground>
+      <Text fontSize={24} style={styles.bold}>
+        {User.name}
+      </Text>
+      <Text fontSize={12}>Joined 1Y 3M</Text>
       <View
         style={{
-          borderWidth: 3,
-          borderColor: "green",
-          width: "80%",
+          width: "90%",
           borderRadius: 15,
           padding: 15,
           backgroundColor: "transparent",
         }}
       >
         <VStack>
-          {data.map((x) => (
-            <HStack
-              justifyContent="space-between"
-              key={x.name}
-              style={{ padding: 7.5 }}
-            >
-              <HStack>
-                <View
-                  style={{
-                    alignSelf: "center",
-                    height: 3,
-                    width: 3,
-                    backgroundColor: "#438672",
-                    marginRight: 8,
-                  }}
-                />
-                <Text style={styles.bulletPoints}>{x.name}</Text>
-              </HStack>
-              <Text style={styles.bulletPoints}>{x.points} pts</Text>
-            </HStack>
-          ))}
+          <Text style={{ ...styles.bold }}>About Me</Text>
         </VStack>
+        <HStack alignItems="flex-start" marginTop={2}>
+          {User.tags.map((tag) => (
+            <Badge
+              backgroundColor="transparent"
+              borderWidth={1}
+              borderColor="#172D55"
+              borderRadius={20}
+              paddingRight={5}
+              paddingLeft={5}
+              paddingTop={3}
+              paddingBottom={3}
+              marginRight={2}
+            >
+              {tag}
+            </Badge>
+          ))}
+        </HStack>
+        <Text
+          fontSize={13}
+          padding={1}
+          marginTop={2}
+          fontWeight="300"
+          fontFamily="Avenir"
+        >
+          {User.introduction}
+        </Text>
+        <HStack justifyContent="space-between">
+          <Image
+            source={require("../assets/images/medal_blue.png")}
+            alt="medal_blue"
+            style={{ width: 40, height: 40 }}
+          />
+          <Image
+            source={require("../assets/images/medal_red.png")}
+            alt="medal_red"
+            style={{ width: 40, height: 40 }}
+          />
+          <Image
+            source={require("../assets/images/medal_green.png")}
+            alt="medal_green"
+            style={{ width: 40, height: 40 }}
+          />
+          <Image
+            source={require("../assets/images/medal_purple.png")}
+            alt="medal_purple"
+            style={{ width: 40, height: 40 }}
+          />
+          <Image
+            source={require("../assets/images/medal_grey.png")}
+            alt="medal_grey"
+            style={{ width: 40, height: 40 }}
+          />
+        </HStack>
       </View>
       <View
         style={{
@@ -174,159 +186,13 @@ const SecondRoute = (props: any) => (
   </ScrollView>
 );
 
-const FirstRoute = (history: any) => (
-  <ScrollView style={{ flex: 1 }}>
-    <VStack alignItems="center" paddingBottom="20">
-      {history &&
-        history.map((x: any) => (
-          <VStack
-            style={{
-              borderWidth: 3,
-              borderColor: "green",
-              width: "80%",
-              borderRadius: 15,
-              paddingTop: 10,
-              paddingBottom: 25,
-              marginBottom: 15,
-              paddingHorizontal: 25,
-              backgroundColor: "transparent",
-            }}
-            key={x.id}
-          >
-            <HStack justifyContent="space-between">
-              <VStack space={1}>
-                <Text style={styles.title}>Transaction No:</Text>
-                <Text style={styles.info}>{x.id}</Text>
-                <Text style={styles.title}>Date:</Text>
-                <Text style={styles.info}>
-                  {
-                    (x._createdAt as firebase.firestore.Timestamp)
-                      .toDate()
-                      .toLocaleString("en-GB", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                      })
-                    // .slice(0, -3)
-                  }
-                </Text>
-              </VStack>
-              <VStack space={1}>
-                <Text style={styles.title}>Recycled Object:</Text>
-                <Text style={styles.info}>{x.recycledObject}</Text>
-                <Text style={styles.title}>Reward Points:</Text>
-                <Text style={styles.info}>{x.points}</Text>
-              </VStack>
-            </HStack>
-            <VStack space={1}>
-              <Text style={styles.title}>Location:</Text>
-              <Text style={styles.info}>{x.location}</Text>
-              <Text style={{ ...styles.info, fontWeight: "300" }}>
-                {x.address}
-              </Text>
-            </VStack>
-          </VStack>
-        ))}
-    </VStack>
-  </ScrollView>
-);
-
-const mapStateToSchemeProps = (state: any, props: any) => {
-  console.log(state.user);
-  return { reward: state.user.reward };
-};
-
-const mapHistoryToSchemeProps = (state: any, props: any) => {
-  return {};
-};
-
 const mapStateToProps = (state: any, props: any) => {
   return { user: state.user };
 };
 
 const ProfileScreen = (props: any) => {
-  const [index, setIndex] = React.useState(0);
-  const [history, setHistory] = React.useState(null);
-  const [routes] = React.useState([
-    { key: "History", title: "History" },
-    { key: "SchemeDetails", title: "Scheme Details" },
-  ]);
-  const initialLayout = { width: Dimensions.get("window").width };
-  const renderScene = SceneMap({
-    History: connect(mapHistoryToSchemeProps)(() => FirstRoute(history)),
-    SchemeDetails: connect(mapStateToSchemeProps)(SecondRoute),
-  });
-  useEffect(() => {
-    fetchFirestoreHistory();
-  }, []);
+  useEffect(() => {}, []);
 
-  const fetchFirestoreHistory = async () => {
-    const temp: any = await getHistory(props.user);
-    setHistory(temp);
-  };
-
-  const renderTabBar = (props: any) => {
-    const inputRange = props.navigationState.routes.map(
-      (x: any, i: number) => i
-    );
-
-    return (
-      <Box
-        flexDirection="row"
-        w={Dimensions.get("window").width * 0.7}
-        borderRadius={15}
-        padding={1}
-        marginTop={4}
-        marginBottom={4}
-        marginLeft={Dimensions.get("window").width * 0.15}
-        marginRight={Dimensions.get("window").width * 0.15}
-      >
-        {props.navigationState.routes.map((route: any, i: number) => {
-          const opacity = props.position.interpolate({
-            inputRange,
-            outputRange: inputRange.map((inputIndex: any) =>
-              inputIndex === i ? 1 : 0.5
-            ),
-          });
-
-          return (
-            <Box
-              flex={1}
-              alignItems="center"
-              p={2}
-              key={i}
-              borderTopLeftRadius={i == 0 ? 20 : 0}
-              borderBottomLeftRadius={i == 0 ? 20 : 0}
-              borderBottomRightRadius={i == routes.length - 1 ? 20 : 0}
-              borderTopRightRadius={i == routes.length - 1 ? 20 : 0}
-              backgroundColor={index == i ? "#438672" : "transparent"}
-              borderColor="#438672"
-              borderWidth={2}
-            >
-              <Pressable
-                onPress={() => {
-                  console.log(i);
-                  setIndex(i);
-                }}
-              >
-                <Animated.Text
-                  style={{
-                    opacity,
-                    color: index != i ? "#438672" : "#FFF",
-                    fontWeight: "600",
-                  }}
-                >
-                  {route.title}
-                </Animated.Text>
-              </Pressable>
-            </Box>
-          );
-        })}
-      </Box>
-    );
-  };
   return (
     <SafeAreaView>
       <VStack
@@ -346,17 +212,7 @@ const ProfileScreen = (props: any) => {
             onPress={() => logout()}
           />
         </HStack>
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          renderTabBar={renderTabBar}
-          onIndexChange={setIndex}
-          initialLayout={initialLayout}
-          style={{
-            marginTop: StatusBar.currentHeight,
-            // justifyContent: "center",
-          }}
-        />
+        <SecondRoute></SecondRoute>
       </VStack>
     </SafeAreaView>
   );
@@ -369,7 +225,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   rewards: {
-    width: "100%",
+    width: 125,
     height: 125,
   },
   bulletPoints: {
@@ -380,6 +236,9 @@ const styles = StyleSheet.create({
     fontWeight: "300",
     opacity: 0.89,
     marginTop: 15,
+  },
+  bold: {
+    fontWeight: "bold",
   },
   info: {
     fontWeight: "bold",
