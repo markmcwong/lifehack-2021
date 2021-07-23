@@ -111,7 +111,7 @@ const TabOneScreen = (props: any) => {
         {LogoTitle()}
         <Button
           variant="unstyled"
-          onPress={() => props.navigation.navigate("TabThree")}
+          onPress={() => props.navigation.navigate("TabFour")}
         >
           <Image
             source={{

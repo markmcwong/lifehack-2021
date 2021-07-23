@@ -27,17 +27,12 @@ import firestore from "firebase/firestore";
 import { GiftedChat } from "react-native-gifted-chat";
 import { connect } from "react-redux";
 
-YellowBox.ignoreWarnings(["Seeting a timer for a long period of time"]);
-
-const languages = ["English", "Japanese", "Mandarin"];
-const interests = ["Classical Music", "Desserts", "Tai Chi"];
-
 const achievementList = [
   {
     medal: (
       <Image
         alt="medalRed"
-        size="sm"
+        size={12}
         source={require("../assets/images/medal_red.png")}
       />
     ),
@@ -48,28 +43,47 @@ const achievementList = [
     medal: (
       <Image
         alt="medalBlue"
-        size="sm"
+        size={12}
         source={require("../assets/images/medal_blue.png")}
       />
     ),
     title: "Extrovert!",
-    description: "Chat with 3 elderlies",
+    description: "Chat with 10 elderlies",
   },
-  //   {
-  //     medal: "../assets/images/medal_purple.png",
-  //     title: "Very Talkative!",
-  //     description: "Chat with elderlies more than 60 minutes",
-  //   },
-  //   {
-  //     medal: "../assets/images/medal_red.png",
-  //     title: "Inviter!",
-  //     description: "Invite and share this app to 5 friends",
-  //   },
-  //   {
-  //     medal: "../assets/images/medal_grey.png",
-  //     description: "Chat with elderlies in 10 different language",
-  //     title: "Language Expert!",
-  //   },
+  {
+    medal: (
+      <Image
+        alt="medalGreen"
+        size={12}
+        source={require("../assets/images/medal_green.png")}
+      />
+    ),
+    title: "Very Talkative!",
+    description: "Chat with elderlies more than 60 minutes",
+  },
+  {
+    medal: (
+      <Image
+        alt="medalPurple"
+        size={12}
+        source={require("../assets/images/medal_purple.png")}
+      />
+    ),
+    title: "Inviter!",
+    description: "Invite and share this app to 10 friends",
+  },
+  {
+    medal: (
+      <Image
+        alt="medalGrey"
+        size={12}
+        source={require("../assets/images/medal_grey.png")}
+      />
+    ),
+    description:
+      "Chat with elderlies that have 20 different interests in total",
+    title: "You Have Wide Inetersts!",
+  },
 ];
 
 function LogoTitle() {
@@ -100,6 +114,20 @@ const Achievement = (props: any) => {
   return (
     <>
       <View style={styles.container}>
+        <HStack style={styles.topBar}>
+          <Text
+            style={{
+              fontSize: 24,
+              color: "#ff7200",
+              fontWeight: "800",
+              fontFamily: "Avenir",
+              marginLeft: "3%",
+            }}
+          >
+            Achievement
+          </Text>
+        </HStack>
+
         <VStack
           h="100%"
           w="100%"
@@ -108,7 +136,7 @@ const Achievement = (props: any) => {
           <Image
             width="70%"
             resizeMode="contain"
-            height="40%"
+            height="30%"
             source={require("../assets/images/achievement.png")}
             alt="achievement"
           />
@@ -119,7 +147,7 @@ const Achievement = (props: any) => {
             p={8}
             style={{
               //   position: "absolute",
-              marginTop: "-10%",
+              marginTop: "-7%",
               zIndex: 10,
               width: "100%",
               height: "100%",
@@ -143,9 +171,10 @@ const Achievement = (props: any) => {
                 >
                   <Text
                     style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
+                      fontSize: 20,
+                      fontWeight: "800",
                       color: "#46454C",
+                      fontFamily: "Avenir",
                     }}
                   >
                     {item.title}
@@ -154,7 +183,7 @@ const Achievement = (props: any) => {
                   <HStack space={2} width="80%">
                     <Text
                       style={{
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: "200",
                         color: "#46454C",
                       }}
@@ -188,6 +217,15 @@ export default connect(mapStateToProps)(Achievement);
 // export default DepositStack;
 
 const styles = StyleSheet.create({
+  topBar: {
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: "5%",
+    backgroundColor: "#ffffff",
+    paddingTop: "5%",
+    paddingLeft: "5%",
+    paddingBottom: "3%",
+  },
   container: {
     flex: 1,
     paddingTop: 20,
