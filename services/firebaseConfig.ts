@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyB-om0RhxVQnzzuSTYY-HtZLAbwxDOQplM",
-  authDomain: "gme-2021.firebaseapp.com",
-  projectId: "gme-2021",
-  storageBucket: "gme-2021.appspot.com",
-  messagingSenderId: "698867919136",
-  appId: "1:698867919136:web:e2d2e72ae46c55da5d8f45",
-  measurementId: "G-70EKCGFKB5",
+  apiKey: "AIzaSyAPvDjbjBuV6kGGepK7IxwgkmG8JzCFw4Y",
+  authDomain: "lifehack-2021.firebaseapp.com",
+  projectId: "lifehack-2021",
+  storageBucket: "lifehack-2021.appspot.com",
+  messagingSenderId: "815833561357",
+  appId: "1:815833561357:web:1d4d37fb67cfe11e34d844",
+  measurementId: "G-Y8ZQCG9E17",
 };

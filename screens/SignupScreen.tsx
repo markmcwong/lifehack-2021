@@ -21,6 +21,7 @@ import { loginWithGoogle, register } from "../services/auth";
 export default function LandingScreen({ navigation }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const _renderItem = ({ item, index }) => {
     return (
@@ -61,6 +62,13 @@ export default function LandingScreen({ navigation }) {
               value={password}
               onChangeText={(e: string) => setPassword(e)}
             />
+            <Input
+              padding={4}
+              placeholder="User Name"
+              backgroundColor="#F1F1F1"
+              value={username}
+              onChangeText={(e: string) => setUsername(e)}
+            />
             <Text style={{ ...styles.link, textAlign: "left" }}>
               Password should consist of at least 8 characters, including
               letters and numbers
@@ -73,7 +81,7 @@ export default function LandingScreen({ navigation }) {
             <Button
               style={styles.button}
               // w="100%"
-              onPress={() => register(email, password)}
+              onPress={() => register(username, email, password)}
             >
               Sign Up
             </Button>

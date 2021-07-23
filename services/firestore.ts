@@ -23,9 +23,11 @@ export const getHistory = async (userId: any) => {
   });
 };
 
-export const createNewUserRecord = async (userId: string) => {
+export const createNewUserRecord = async (name: string, email: string, userId: string) => {
   dbh.collection("user").doc(userId).set({
     reward: 0,
+    email: email,
+    name: name
   });
 };
 

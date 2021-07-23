@@ -54,11 +54,13 @@ export async function login(email: string, password: string) {
   });
 }
 
-export async function register(email: string, password: string) {
+export async function register(name: string, email: string, password: string) {
+  console.log('clicked');
   const result = await firebase
     .auth()
     .createUserWithEmailAndPassword(email, password);
-  createNewUserRecord(result.user!.uid);
+  await result.user?.updateProfile({ displayName: name });
+  createNewUserRecord(name, email, result.user!.uid);
   store.dispatch({
     type: "LOGIN",
     name: result.user?.displayName,
