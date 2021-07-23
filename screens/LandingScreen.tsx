@@ -44,7 +44,7 @@ export default function LandingScreen({ navigation }) {
   };
   const carouselItems = [
     {
-      title: "Find the nearest e-wate recycling kiosk",
+      title: "Connect with elderlies and youth locally & globally. Discover Chat & Engage",
       image: (
         <Image
           resizeMode="contain"
@@ -56,7 +56,7 @@ export default function LandingScreen({ navigation }) {
     },
     {
       title:
-        "Recycle your e-waste while getting\nreward points and redeem attrative awards",
+        "Explore new things through our app.\nDiscover & understand other culture",
       image: (
         <Image
           resizeMode="contain"
@@ -68,7 +68,7 @@ export default function LandingScreen({ navigation }) {
     },
     {
       title:
-        "Protect the environment by recycling your\ne-waste and turn it into 3D filaments",
+        "Share you moments. Make your every day fun & enjoyable.",
       image: (
         <Image
           resizeMode="contain"
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   button: {
-    backgroundColor: "#00A986",
+    backgroundColor: "#F9A826",
     width: "75%",
     borderRadius: 7.5,
     marginTop: 15,
