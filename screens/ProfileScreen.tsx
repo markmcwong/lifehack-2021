@@ -49,7 +49,7 @@ const SecondRoute = (props: any) => (
       <ImageBackground
         borderRadius={35}
         resizeMode="cover"
-        source={require("../assets/images/asian-elderly-woman-feeling-happy-smiling-looking-camera-while-relax-kitchen-home.png")}
+        source={require("../assets/images/robeJobs.jpg")}
         style={styles.rewards}
       ></ImageBackground>
       <Text fontSize={24} style={styles.bold}>

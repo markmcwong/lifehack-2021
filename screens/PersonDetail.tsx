@@ -12,10 +12,15 @@ import {
   Center,
   ZStack,
   Container,
+  Fab,
 } from "native-base";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { withSafeAreaInsets } from "react-native-safe-area-context";
@@ -66,7 +71,7 @@ export default function PersonDetailScreen({ navigation }) {
             // flex={1}
             // resizeMode="cover"
             w="100%"
-            h="45%"
+            h="50%"
             alt="DisplayPicture"
             source={require("../assets/images/asian-elderly-woman-feeling-happy-smiling-looking-camera-while-relax-kitchen-home.png")}
           />
@@ -75,8 +80,8 @@ export default function PersonDetailScreen({ navigation }) {
               bg="#EFB556"
               borderTopRadius={25}
               paddingLeft={8}
-              py={5}
-              h={160}
+              py={7}
+              h={180}
               w="100%"
               alignItems="flex-start"
               style={{
@@ -163,7 +168,7 @@ export default function PersonDetailScreen({ navigation }) {
               alignItems="flex-start"
               style={{
                 // position: "absolute",
-                // marginTop: "-5%",
+                marginTop: "-2.5%",
                 zIndex: 20,
                 // height: "50%",
                 borderRadius: 20,
@@ -235,6 +240,20 @@ export default function PersonDetailScreen({ navigation }) {
                   "I am Morikawa.\nFirst time using this app.\nHope to chat more with our young generation."
                 }
               </Text>
+              <Fab
+                position="absolute"
+                size="sm"
+                backgroundColor="orange"
+                icon={
+                  <Icon
+                    // position="absolute"
+                    size="sm"
+                    color="white"
+                    as={Ionicons}
+                    name="chatbubble-outline"
+                  />
+                }
+              />
             </VStack>
           </VStack>
           <Icon

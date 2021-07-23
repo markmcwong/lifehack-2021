@@ -37,7 +37,7 @@ export const createNewUserRecord = async (
 export const getUserRecord = async (userId: string) => {
   console.log("userId : " + userId);
   const record = await db.collection("user").doc(userId).get();
-  console.log("current user reward: " + record.data()!.reward);
+  console.log("current user: " + record.data()!);
   store.dispatch({ type: "READ_USER_DETAILS", name: record.data()!.name });
 };
 

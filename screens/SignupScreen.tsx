@@ -79,6 +79,7 @@ export default function LandingScreen({ navigation }) {
               </Text>
             </Checkbox>
             <Button
+              marginBottom="10%"
               style={styles.button}
               // w="100%"
               onPress={() => register(username, email, password)}
@@ -87,14 +88,15 @@ export default function LandingScreen({ navigation }) {
             </Button>
           </VStack>
         </VStack>
-        <VStack paddingBottom={5}>
+
+        <VStack paddingBottom={2}>
           <Text
             style={{ ...styles.link, marginTop: "5%" }}
             onPress={() => navigation.navigate("Login")}
           >
             Have an account? Sign in Here
           </Text>
-          <HStack width="75%" marginTop={7}>
+          <HStack width="75%" marginTop={2}>
             <Divider size={2} width="45%" marginTop={3} />
             <Text style={styles.link}>OR</Text>
             <Divider size={2} width="45%" marginTop={3} />
@@ -104,7 +106,7 @@ export default function LandingScreen({ navigation }) {
             borderColor="#b9b9b9"
             variant="outline"
             // width="75%"
-            marginTop={6}
+            marginTop={2}
             onPress={() => loginWithGoogle()}
             startIcon={
               <Icon as={MaterialCommunityIcons} name="google" size={5} />
