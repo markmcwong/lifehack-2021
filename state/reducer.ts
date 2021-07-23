@@ -2,7 +2,7 @@ import * as actions from "./actions";
 import { addDepositRecord } from "../services/firestore";
 
 const initialState = {
-  user: { name: null, uid: null, reward: 0 },
+  user: { name: null, uid: null },
   coordinates: null,
   location: null,
   form: {
@@ -14,11 +14,16 @@ const initialState = {
 };
 
 export default (state = initialState, action: any) => {
+  console.log(state);
   switch (action.type) {
     case actions.LOGIN:
       return {
         ...state,
-        user: { ...state.user, name: action.userName, uid: action.uid },
+        user: {
+          ...state.user,
+          name: action.userName ?? state.user.name,
+          uid: action.uid,
+        },
       };
     case actions.LOGOUT:
       return {
@@ -57,27 +62,26 @@ export default (state = initialState, action: any) => {
           afterImage: action.afterImage,
         },
       };
-    case actions.SUBMIT_FORM:
-      console.log(state);
-      addDepositRecord(
-        state.user.uid,
-        state.form.dropoffPoint,
-        state.form.recycledObject,
-        state.form.beforeImage,
-        state.form.afterImage,
-        state.user.reward
-      );
-      return {
-        ...state,
-        form: {},
-      };
-    case actions.READ_REWARD:
-      console.log(action.reward);
+    // case actions.SUBMIT_FORM:
+    //   console.log(state);
+    //   addDepositRecord(
+    //     state.user.uid,
+    //     state.form.dropoffPoint,
+    //     state.form.recycledObject,
+    //     state.form.beforeImage,
+    //     state.form.afterImage,
+    //     state.user.reward
+    //   );
+    //   return {
+    //     ...state,
+    //     form: {},
+    //   };
+    case actions.READ_USER_DETAILS:
       return {
         ...state,
         user: {
           ...state.user,
-          reward: action.reward,
+          name: action.name,
         },
       };
     default:

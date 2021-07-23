@@ -9,6 +9,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 
 import Colors from "../constants/Colors";
+import ChatBox from "../screens/chatBox";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
@@ -17,6 +18,7 @@ import { Image, HStack, VStack, Icon } from "native-base";
 import ProfileScreen from "../screens/ProfileScreen";
 import { TouchableOpacity } from "react-native";
 import PersonDetailScreen from "../screens/PersonDetail";
+import Achievement from "../screens/achievement";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -57,7 +59,7 @@ export default function BottomTabNavigator() {
       />
       <BottomTab.Screen
         name="TabThree"
-        component={ProfileScreen}
+        component={Achievement}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="trophy-outline" color={color} />
@@ -216,7 +218,7 @@ function TabTwoNavigator() {
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
-        component={TabTwoScreen}
+        component={ChatBox}
         options={{
           header: () => null,
           headerTitle: () => <Text></Text>,

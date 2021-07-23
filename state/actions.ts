@@ -12,7 +12,7 @@ export const DEPOSIT_CONFIRM = "DEPOSIT_CONFIRM";
 
 export const SUBMIT_FORM = "SUBMIT_FORM";
 
-export const READ_REWARD = "READ_REWARD";
+export const READ_USER_DETAILS = "READ_USER_DETAILS";
 
 export const loginAction = (name: string, uid: string) => ({
   type: LOGIN,
@@ -58,7 +58,7 @@ export const depositFormSubmit = () => ({
   type: SUBMIT_FORM,
 });
 
-export const readRewardPoints = (reward: number) => ({
-  type: READ_REWARD,
-  payload: { reward },
+export const readUserDetails = (name: number) => ({
+  type: READ_USER_DETAILS,
+  payload: { name },
 });

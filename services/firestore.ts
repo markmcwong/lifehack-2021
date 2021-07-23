@@ -38,7 +38,7 @@ export const getUserRecord = async (userId: string) => {
   console.log("userId : " + userId);
   const record = await db.collection("user").doc(userId).get();
   console.log("current user reward: " + record.data()!.reward);
-  store.dispatch({ type: "READ_REWARD", reward: record.data()!.reward });
+  store.dispatch({ type: "READ_USER_DETAILS", name: record.data()!.name });
 };
 
 export const addDepositRecord = async (

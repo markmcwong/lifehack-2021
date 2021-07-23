@@ -55,7 +55,7 @@ export async function login(email: string, password: string) {
 }
 
 export async function register(name: string, email: string, password: string) {
-  console.log('clicked');
+  console.log("clicked");
   const result = await firebase
     .auth()
     .createUserWithEmailAndPassword(email, password);
