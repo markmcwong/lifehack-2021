@@ -59,29 +59,6 @@ const mapStateToProps = (state: any, props: any) => {
 const ChatBox = (props: any) => {
   const messages: any = useState(["hello"]);
 
-  useEffect(() => {
-    const unsubscribe = firestore
-      .collection("messages")
-      .onSnapshot((querySnapshot) => {
-        const messagesFirestore = querySnapshot
-          .docChanges()
-          .filter((type: any) => type === "added")
-          .map((doc: any) => {
-            const message = doc.data();
-            //createdAt is firebase.firestore.Timestamp instance
-            //https://firebase.google.com/docs/reference/js/firebase.firestore.Timestamp
-            return { ...message, createdAt: message.createdAt.toDate() };
-          })
-          .sort(
-            (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime()
-          );
-      });
-    return () => unsubscribe();
-  }, []);
-
-  const [scanned, setScanned] = useState(false);
-  const [hasPermission, setHasPermission] = useState(false);
-
   return (
     <>
       <View style={styles.container}>
@@ -96,7 +73,7 @@ const ChatBox = (props: any) => {
             style={{ position: "absolute", top: 40, left: 30 }}
             // onPress={() => navigation.goBack()}
           />
-          <Text>{props.user.name}</Text>
+          <Text>{props.user.name} asdsdhi</Text>
           <GiftedChat messages={messages} user={props.user} />
         </VStack>
       </View>
