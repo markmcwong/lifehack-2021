@@ -8,6 +8,7 @@ import AuthStack from "./AuthNavigation";
 import { connect } from "react-redux";
 import DepositScreen from "../screens/DepositFormScreen";
 import DepositStack from "./DepositNavigator";
+import PersonDetail from "../screens/PersonDetail";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -25,7 +26,14 @@ const RootNavigator = (props: any) => {
         // User is signed in
         <>
           <Stack.Screen name="Auth" component={BottomTabNavigator} />
-          <Stack.Screen name="Deposit" component={DepositStack} />
+          <Stack.Screen
+            options={{
+              header: () => null,
+              headerTitle: () => null,
+            }}
+            name="PersonDetailScreen"
+            component={PersonDetail}
+          />
         </>
       )}
       <Stack.Screen

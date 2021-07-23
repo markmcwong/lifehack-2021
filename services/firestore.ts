@@ -5,7 +5,7 @@ import { firebaseConfig } from "./firebaseConfig";
 import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
 import { data } from "../screens/ProfileScreen";
-
+import * as firestoreTypes from "@firebase/firestore-types";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -23,11 +23,14 @@ export const getHistory = async (userId: any) => {
   });
 };
 
-export const createNewUserRecord = async (name: string, email: string, userId: string) => {
+export const createNewUserRecord = async (
+  name: string,
+  email: string,
+  userId: string
+) => {
   db.collection("user").doc(userId).set({
-    reward: 0,
     email: email,
-    name: name
+    name: name,
   });
 };
 
@@ -56,8 +59,7 @@ export const addDepositRecord = async (
     afterImage: afterImage,
     points: points,
   });
-  db
-    .collection("user")
+  db.collection("user")
     .doc(userId)
     .update({ reward: currentPoints + points });
   getUserRecord(userId);
@@ -124,24 +126,23 @@ const handleImagePicked = async (
 
 export const fetchGroupByUserID = (uid: string) => {
   let groups;
-  console.log('start');
+  console.log("start");
   return new Promise((resolve, reject) => {
-    const groupRef = db.collection('pair')
+    const groupRef = db.collection("pair");
     groupRef
-     .where('members', 'array-contains', db.collection('user').doc(uid))
-     .onSnapshot((querySnapshot: any) => {
-      //  const allGroups = []
-       querySnapshot.forEach((doc) => {
-         console.log(doc.data());
-        //  const data = doc.data()
-        //  data.id = doc.id
-        //  if (data.recentMessage) allGroups.push(data)
-       })
-      //  groups = allGroups;
-     })
-   })
-}
-
+      .where("members", "array-contains", db.collection("user").doc(uid))
+      .onSnapshot((querySnapshot: any) => {
+        //  const allGroups = []
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+          //  const data = doc.data()
+          //  data.id = doc.id
+          //  if (data.recentMessage) allGroups.push(data)
+        });
+        //  groups = allGroups;
+      });
+  });
+};
 
 export const fetchMessagesByGroupId = (groupId: string) => {
   let messages;
@@ -153,11 +154,21 @@ export const fetchMessagesByGroupId = (groupId: string) => {
       .collection("messages")
       .orderBy("sentAt")
       .onSnapshot((querySnapshot) => {
-        const allMessages:any = [];
+        const allMessages: any = [];
         querySnapshot.forEach((doc) => {
           if (doc) allMessages.push(doc.data());
         });
         messages = allMessages;
       });
   });
+};
+
+export const fetchUsers = async (languages: string[]) => {
+  let messages;
+  console.log("start");
+  const userRef = db.collection("user");
+  const snapshot: firestoreTypes.QuerySnapshot = await userRef
+    .where("languages", "array-contains-any", languages)
+    .get();
+  snapshot.docs.forEach((x) => console.log(x.data()));
 };

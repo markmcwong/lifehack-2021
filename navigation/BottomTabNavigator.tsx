@@ -165,8 +165,12 @@ function TabOneNavigator() {
   return (
     <TabOneStack.Navigator
       screenOptions={{
-        headerTintColor: "#ff9f00",
+        // headerShown: false,
+        // header: () => null,
+        headerTitle: () => <Text></Text>,
+        // headerTintColor: "#ff9f00",
         // headerTitleStyle: { textAlign: "left" },
+        // header: () => null,
         headerStyle: {
           backgroundColor: "#ff9f00",
           height: 30,
@@ -187,19 +191,20 @@ function TabOneNavigator() {
           headerTitle: () => <Text></Text>,
         }}
       />
-      <TabOneStack.Screen
+      {/* <TabOneStack.Screen
         name="PersonDetailScreen"
         component={PersonDetailScreen}
         options={{
+          headerShown: false,
           // header: () => (
           //   <View style={{ backgroundColor: "#57B894" }}>
           //     <Text>abcx</Text>
           //   </View>
           // ),
           // header: () => null,
-          headerTitle: () => <Text></Text>,
+          // headerTitle: () => <Text></Text>,
         }}
-      />
+      /> */}
     </TabOneStack.Navigator>
   );
 }

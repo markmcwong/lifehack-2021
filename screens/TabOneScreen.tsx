@@ -23,6 +23,7 @@ import { Text, View } from "../components/Themed";
 import SlideUpDrawer from "../widgets/slideUpDrawer";
 import DepositScreen from "./DepositFormScreen";
 import GestureRecognizer from "react-native-swipe-gestures";
+import { fetchUsers } from "../services/firestore";
 
 const userListArray = [
   {
@@ -80,6 +81,7 @@ const TabOneScreen = (props: any) => {
 
   useEffect(() => {
     console.log(props);
+    fetchUsers(["English"]);
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
