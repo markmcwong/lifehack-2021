@@ -46,6 +46,7 @@ const SlideUpDrawer = ({ isPanelActive, callback }) => {
               borderColor={active.indexOf(option) != -1 ? "#F5A623" : "#172D55"}
               borderWidth={1}
               _text={{
+                // fontSize: 14,
                 color: active.indexOf(option) != -1 ? "#FFF" : "#000",
               }}
               onPress={() => {

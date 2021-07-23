@@ -44,7 +44,8 @@ export default function LandingScreen({ navigation }) {
   };
   const carouselItems = [
     {
-      title: "Connect with elderlies and youth locally & globally. Discover Chat & Engage",
+      title:
+        "Connect with elderlies and youth locally & globally. Discover Chat & Engage",
       image: (
         <Image
           resizeMode="contain"
@@ -67,8 +68,7 @@ export default function LandingScreen({ navigation }) {
       ),
     },
     {
-      title:
-        "Share you moments. Make your every day fun & enjoyable.",
+      title: "Share you moments. Make your every day fun & enjoyable.",
       image: (
         <Image
           resizeMode="contain"

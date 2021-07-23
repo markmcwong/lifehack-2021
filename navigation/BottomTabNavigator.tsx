@@ -16,6 +16,7 @@ import { Text, View } from "../components/Themed";
 import { Image, HStack, VStack, Icon } from "native-base";
 import ProfileScreen from "../screens/ProfileScreen";
 import { TouchableOpacity } from "react-native";
+import PersonDetailScreen from "../screens/PersonDetail";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -25,7 +26,7 @@ export default function BottomTabNavigator() {
       initialRouteName="TabOne"
       tabBar={(props) => <MyTabBar {...props} />}
       tabBarOptions={{
-        activeTintColor: "#FFF",
+        activeTintColor: "#EFB556",
         inactiveTintColor: "#c2c2c2",
         safeAreaInsets: { bottom: 10 },
 
@@ -38,9 +39,11 @@ export default function BottomTabNavigator() {
         name="TabOne"
         component={TabOneNavigator}
         options={{
-          // style: { backgroundColor: "#57B894" },
+          // style: { backgroundColor: "#ffffff" },
           // tabBarVisible: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="scan" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
+          ),
         }}
       />
       <BottomTab.Screen
@@ -48,12 +51,21 @@ export default function BottomTabNavigator() {
         component={TabTwoNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="location-sharp" color={color} />
+            <TabBarIcon name="chatbubbles-outline" color={color} />
           ),
         }}
       />
       <BottomTab.Screen
         name="TabThree"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="trophy-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="TabFour"
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ color }) => (
@@ -72,7 +84,7 @@ function MyTabBar({ state, descriptors, navigation }) {
     <View
       style={{
         flexDirection: "row",
-        backgroundColor: "#57B894",
+        backgroundColor: "#ffffff",
         // height: 50,
 
         padding: 15,
@@ -126,7 +138,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             style={{ flex: 1, alignItems: "center" }}
           >
             <Icon
-              color={isFocused ? "#FFF" : "#c2c2c2"}
+              color={isFocused ? "#ff9f00" : "#c2c2c2"}
               as={options.tabBarIcon}
             ></Icon>
           </TouchableOpacity>
@@ -153,10 +165,10 @@ function TabOneNavigator() {
   return (
     <TabOneStack.Navigator
       screenOptions={{
-        headerTintColor: "#57B894",
+        headerTintColor: "#ff9f00",
         // headerTitleStyle: { textAlign: "left" },
         headerStyle: {
-          backgroundColor: "#57B894",
+          backgroundColor: "#ff9f00",
           height: 30,
           shadowOffset: { height: 0 },
         },
@@ -165,6 +177,19 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
+        options={{
+          // header: () => (
+          //   <View style={{ backgroundColor: "#57B894" }}>
+          //     <Text>abcx</Text>
+          //   </View>
+          // ),
+          // header: () => null,
+          headerTitle: () => <Text></Text>,
+        }}
+      />
+      <TabOneStack.Screen
+        name="PersonDetailScreen"
+        component={PersonDetailScreen}
         options={{
           // header: () => (
           //   <View style={{ backgroundColor: "#57B894" }}>
