@@ -1,6 +1,15 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { VStack, Image, Button, HStack, Box, Avatar, Badge } from "native-base";
+import {
+  VStack,
+  Image,
+  Button,
+  HStack,
+  Box,
+  Avatar,
+  Badge,
+  Pressable,
+} from "native-base";
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -14,6 +23,29 @@ import { Text, View } from "../components/Themed";
 import SlideUpDrawer from "../widgets/slideUpDrawer";
 import DepositScreen from "./DepositFormScreen";
 import GestureRecognizer from "react-native-swipe-gestures";
+
+const userListArray = [
+  {
+    profilePicture: null,
+    languages: ["English", "Spanish", "Japanese"],
+    name: "POOCREAMPIE",
+  },
+  {
+    profilePicture: null,
+    languages: ["English", "Spanish", "Spanish", "Spanish", "Japanese"],
+    name: "POOCREAMPIE",
+  },
+  {
+    profilePicture: null,
+    languages: ["English", "Spanish", "Spanish", "Spanish", "Japanese"],
+    name: "POOPCREAMPIE",
+  },
+  {
+    profilePicture: null,
+    languages: ["English", "Spanish", "Spanish", "Spanish", "Japanese"],
+    name: "POOPIECREAMPIE",
+  },
+];
 
 function LogoTitle() {
   return (
@@ -105,476 +137,71 @@ const TabOneScreen = (props: any) => {
         />
         <ScrollView>
           <View style={styles.container}>
-            <Box
-              onTouchStart={() => navigation.navigate("PersonDetailScreen")}
-              bg="#ffffff"
-              rounded="xl"
-              p={8}
-              style={{ width: "90%", borderRadius: 20, marginBottom: "5%" }}
-            >
-              <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                <Avatar
-                  size="lg"
-                  source={{
-                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                  }}
-                >
-                  SS
-                </Avatar>
-                <VStack
-                  space={2}
-                  w="90%"
-                  style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
-                      color: "#46454C",
+            {userListArray.map((item, array) => (
+              <Pressable
+                onPress={() => props.navigation.navigate("PersonDetailScreen")}
+                bg="#ffffff"
+                rounded="xl"
+                p={8}
+                style={{
+                  width: "90%",
+                  borderRadius: 20,
+                  marginBottom: "5%",
+                }}
+              >
+                <HStack space={4} w="100%" style={{ alignItems: "center" }}>
+                  <Avatar
+                    size="lg"
+                    source={{
+                      uri: "https://wallpaperaccess.com/full/317501.jpg",
                     }}
                   >
-                    {" "}
-                    Morikawa
-                  </Text>
-                  <ScrollView
-                    horizontal={true}
-                    width="80%"
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    <HStack space={2} width="80%">
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="orange"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          paddingBottom: 0,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Spanish
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Japanese
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                    </HStack>
-                  </ScrollView>
-                </VStack>
-              </HStack>
-            </Box>
-
-            <Box
-              bg="#ffffff"
-              rounded="xl"
-              p={8}
-              style={{ width: "90%", borderRadius: 20, marginBottom: "5%" }}
-            >
-              <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                <Avatar
-                  size="lg"
-                  source={{
-                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                  }}
-                >
-                  SS
-                </Avatar>
-                <VStack
-                  space={2}
-                  w="90%"
-                  style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Text
+                    SS
+                  </Avatar>
+                  <VStack
+                    space={2}
+                    w="100%"
                     style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
-                      color: "#46454C",
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
                     }}
                   >
-                    {" "}
-                    Annabel Mcdermott
-                  </Text>
-                  <ScrollView
-                    horizontal={true}
-                    width="80%"
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    <HStack space={2} width="80%">
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="orange"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          paddingBottom: 0,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Spanish
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Japanese
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                    </HStack>
-                  </ScrollView>
-                </VStack>
-              </HStack>
-            </Box>
-
-            <Box
-              bg="#ffffff"
-              rounded="xl"
-              p={8}
-              style={{ width: "90%", borderRadius: 20, marginBottom: "5%" }}
-            >
-              <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                <Avatar
-                  size="lg"
-                  source={{
-                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                  }}
-                >
-                  SS
-                </Avatar>
-                <VStack
-                  space={2}
-                  w="90%"
-                  style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
-                      color: "#46454C",
-                    }}
-                  >
-                    {" "}
-                    Annabel Mcdermott
-                  </Text>
-                  <ScrollView
-                    horizontal={true}
-                    width="80%"
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    <HStack space={2} width="80%">
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="orange"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          paddingBottom: 0,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Spanish
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Japanese
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                    </HStack>
-                  </ScrollView>
-                </VStack>
-              </HStack>
-            </Box>
-
-            <Box
-              bg="#ffffff"
-              rounded="xl"
-              p={8}
-              style={{ width: "90%", borderRadius: 20, marginBottom: "5%" }}
-            >
-              <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                <Avatar
-                  size="lg"
-                  source={{
-                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                  }}
-                >
-                  SS
-                </Avatar>
-                <VStack
-                  space={2}
-                  w="90%"
-                  style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
-                      color: "#46454C",
-                    }}
-                  >
-                    {" "}
-                    Annabel Mcdermott
-                  </Text>
-                  <ScrollView
-                    horizontal={true}
-                    width="80%"
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    <HStack space={2} width="80%">
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="orange"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          paddingBottom: 0,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Spanish
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Japanese
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                    </HStack>
-                  </ScrollView>
-                </VStack>
-              </HStack>
-            </Box>
-
-            <Box
-              bg="#ffffff"
-              rounded="xl"
-              p={8}
-              style={{ width: "90%", borderRadius: 20, marginBottom: "5%" }}
-            >
-              <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                <Avatar
-                  size="lg"
-                  source={{
-                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                  }}
-                >
-                  SS
-                </Avatar>
-                <VStack
-                  space={2}
-                  w="90%"
-                  style={{
-                    alignItems: "flex-start",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
-                      color: "#46454C",
-                    }}
-                  >
-                    {" "}
-                    Annabel Mcdermott
-                  </Text>
-                  <ScrollView
-                    horizontal={true}
-                    width="80%"
-                    showsHorizontalScrollIndicator={false}
-                  >
-                    <HStack space={2} width="80%">
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="orange"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          paddingBottom: 0,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Spanish
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        Japanese
-                      </Badge>
-                      <Badge
-                        variant={"outline"}
-                        colorScheme="dark"
-                        style={{
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          borderRadius: 10,
-                        }}
-                      >
-                        English
-                      </Badge>
-                    </HStack>
-                  </ScrollView>
-                </VStack>
-              </HStack>
-            </Box>
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        fontWeight: "bold",
+                        color: "#46454C",
+                      }}
+                    >
+                      {item.name}
+                    </Text>
+                    <ScrollView
+                      horizontal={true}
+                      width="80%"
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      <HStack space={2} width="80%">
+                        {item.languages.map((language, index) => (
+                          <Badge
+                            variant={"outline"}
+                            colorScheme={index == 0 ? "orange" : "dark"}
+                            style={{
+                              padding: 12,
+                              paddingLeft: 12,
+                              paddingRight: 12,
+                              // paddingBottom: 0,
+                              borderRadius: 10,
+                            }}
+                          >
+                            {language}
+                          </Badge>
+                        ))}
+                      </HStack>
+                    </ScrollView>
+                  </VStack>
+                </HStack>
+              </Pressable>
+            ))}
           </View>
         </ScrollView>
       </GestureRecognizer>
