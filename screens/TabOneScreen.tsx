@@ -8,7 +8,11 @@ import {
   Box,
   Avatar,
   Badge,
+  Fab,
   Pressable,
+  IconButton,
+  Icon,
+  View,
 } from "native-base";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -19,11 +23,12 @@ import { withSafeAreaInsets } from "react-native-safe-area-context";
 import { paddingLeft } from "styled-system";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
+import { Text } from "../components/Themed";
 import SlideUpDrawer from "../widgets/slideUpDrawer";
 import DepositScreen from "./DepositFormScreen";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { fetchUsers } from "../services/firestore";
+import { Ionicons } from "@expo/vector-icons";
 
 const userListArray = [
   {
@@ -48,7 +53,7 @@ const userListArray = [
   },
 ];
 
-function LogoTitle() {
+function LogoTitle(user: any, setDrawerOpen: Function) {
   return (
     <VStack
       alignItems="flex-start"
@@ -59,41 +64,23 @@ function LogoTitle() {
     >
       <Text style={{ fontSize: 16, color: "#FFF" }}>Welcome!</Text>
       <Text style={{ fontSize: 24, color: "#FFF", marginTop: -5 }}>
-        {Date()
-          .toLocaleString()
-          .slice(0, 3)
-          .concat(", ", Date().toLocaleString().slice(4, 15))}
+        {user.name}
       </Text>
     </VStack>
   );
 }
 
 const TabOneScreen = (props: any) => {
-  const [scanned, setScanned] = useState(false);
-  const [hasPermission, setHasPermission] = useState(false);
   const [shouldDrawerOpen, setDrawerOpen] = useState(false);
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(false);
-    alert(`Data ${data} has been scanned!`);
-    props.navigation.navigate("Deposit");
-  };
 
   useEffect(() => {
     console.log(props);
     fetchUsers(["English"]);
     (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
       // fetchGroupByUserID(props.user.uid);
     })();
   }, []);
-  return scanned ? (
-    <BarCodeScanner
-      onBarCodeScanned={scanned ? handleBarCodeScanned : undefined}
-      style={StyleSheet.absoluteFillObject}
-    />
-  ) : (
+  return (
     <>
       <HStack
         style={{
@@ -108,15 +95,13 @@ const TabOneScreen = (props: any) => {
           // borderBottomRightRadius: 20,
         }}
       >
-        {LogoTitle()}
+        {LogoTitle(props.user, () => setDrawerOpen(!shouldDrawerOpen))}
         <Button
           variant="unstyled"
           onPress={() => props.navigation.navigate("TabFour")}
         >
           <Image
-            source={{
-              uri: "https://wallpaperaccess.com/full/317501.jpg",
-            }}
+            source={require("../assets/images/robeJobs.jpg")}
             alt="profile"
             height={50}
             width={50}
@@ -125,6 +110,34 @@ const TabOneScreen = (props: any) => {
           />
         </Button>
       </HStack>
+      <View
+        position="absolute"
+        // placement="top-right"
+        top={20}
+        // left={190}
+        zIndex={3}
+        w="100%"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <IconButton
+          size="lg"
+          backgroundColor="white"
+          borderRadius={30}
+          onPress={() => {
+            setDrawerOpen(!shouldDrawerOpen);
+          }}
+          icon={
+            <Icon
+              // position="absolute"
+              size="sm"
+              color="orange"
+              as={Ionicons}
+              name="filter-outline"
+            />
+          }
+        />
+      </View>
       <GestureRecognizer
         onSwipeUp={() => {
           console.log("swiped");
@@ -154,9 +167,7 @@ const TabOneScreen = (props: any) => {
                 <HStack space={4} w="100%" style={{ alignItems: "center" }}>
                   <Avatar
                     size="lg"
-                    source={{
-                      uri: "https://wallpaperaccess.com/full/317501.jpg",
-                    }}
+                    source={require("../assets/images/robeJobs.jpg")}
                   >
                     SS
                   </Avatar>
