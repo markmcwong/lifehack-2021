@@ -9,11 +9,11 @@ import { data } from "../screens/ProfileScreen";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-const dbh = firebase.firestore();
+const db = firebase.firestore();
 
 export const getHistory = async (userId: any) => {
   console.log(userId);
-  const records = await dbh
+  const records = await db
     .collection("history")
     .where("user", "==", userId.uid)
     .get();
@@ -24,7 +24,7 @@ export const getHistory = async (userId: any) => {
 };
 
 export const createNewUserRecord = async (name: string, email: string, userId: string) => {
-  dbh.collection("user").doc(userId).set({
+  db.collection("user").doc(userId).set({
     reward: 0,
     email: email,
     name: name
@@ -33,7 +33,7 @@ export const createNewUserRecord = async (name: string, email: string, userId: s
 
 export const getUserRecord = async (userId: string) => {
   console.log("userId : " + userId);
-  const record = await dbh.collection("user").doc(userId).get();
+  const record = await db.collection("user").doc(userId).get();
   console.log("current user reward: " + record.data()!.reward);
   store.dispatch({ type: "READ_REWARD", reward: record.data()!.reward });
 };
@@ -47,7 +47,7 @@ export const addDepositRecord = async (
   currentPoints: number
 ) => {
   const points = data.filter((x) => x.name == recycledObject)[0].points ?? 0;
-  dbh.collection("history").add({
+  db.collection("history").add({
     _createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     user: userId,
     location: dropoffPoint,
@@ -56,7 +56,7 @@ export const addDepositRecord = async (
     afterImage: afterImage,
     points: points,
   });
-  dbh
+  db
     .collection("user")
     .doc(userId)
     .update({ reward: currentPoints + points });
@@ -120,4 +120,44 @@ const handleImagePicked = async (
   } finally {
     callbackUploading(false);
   }
+};
+
+export const fetchGroupByUserID = (uid: string) => {
+  let groups;
+  console.log('start');
+  return new Promise((resolve, reject) => {
+    const groupRef = db.collection('pair')
+    groupRef
+     .where('members', 'array-contains', db.collection('user').doc(uid))
+     .onSnapshot((querySnapshot: any) => {
+      //  const allGroups = []
+       querySnapshot.forEach((doc) => {
+         console.log(doc.data());
+        //  const data = doc.data()
+        //  data.id = doc.id
+        //  if (data.recentMessage) allGroups.push(data)
+       })
+      //  groups = allGroups;
+     })
+   })
+}
+
+
+export const fetchMessagesByGroupId = (groupId: string) => {
+  let messages;
+  console.log("start");
+  return new Promise((resolve, reject) => {
+    const messageRef = db.collection("messages");
+    messageRef
+      .doc(groupId.trim())
+      .collection("messages")
+      .orderBy("sentAt")
+      .onSnapshot((querySnapshot) => {
+        const allMessages:any = [];
+        querySnapshot.forEach((doc) => {
+          if (doc) allMessages.push(doc.data());
+        });
+        messages = allMessages;
+      });
+  });
 };
