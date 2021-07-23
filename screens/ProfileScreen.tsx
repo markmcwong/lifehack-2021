@@ -8,6 +8,7 @@ import {
   VStack,
   Text,
   Image,
+  Divider,
 } from "native-base";
 import * as React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -35,8 +36,6 @@ const User = {
     "Hello my friends :) I am Robe Jobs, would love to make some new friends while learning some languages! always find elderly like you interesting, as you have SO MUCH experiences and stories that I do not possess! Would always love to chat with you and know more about your lives ;)",
 };
 
-const BadgesColour = ["red", "blue", "yellow", "green", "grey"];
-
 const SecondRoute = (props: any) => (
   <ScrollView>
     <VStack
@@ -50,7 +49,7 @@ const SecondRoute = (props: any) => (
       <ImageBackground
         borderRadius={35}
         resizeMode="cover"
-        source={require("../assets/images/reward.png")}
+        source={require("../assets/images/asian-elderly-woman-feeling-happy-smiling-looking-camera-while-relax-kitchen-home.png")}
         style={styles.rewards}
       ></ImageBackground>
       <Text fontSize={24} style={styles.bold}>
@@ -87,12 +86,16 @@ const SecondRoute = (props: any) => (
         </HStack>
         <Text
           fontSize={13}
-          padding={1}
+          py={2}
           marginTop={2}
           fontWeight="300"
           fontFamily="Avenir"
         >
           {User.introduction}
+        </Text>
+        <Divider size={2} my={5} />
+        <Text paddingBottom={5} style={{ ...styles.bold }}>
+          Badges
         </Text>
         <HStack justifyContent="space-between">
           <Image
@@ -122,66 +125,6 @@ const SecondRoute = (props: any) => (
           />
         </HStack>
       </View>
-      <View
-        style={{
-          borderWidth: 3,
-          borderColor: "green",
-          width: "80%",
-          borderRadius: 15,
-          padding: 25,
-          backgroundColor: "transparent",
-        }}
-      >
-        <VStack space={5}>
-          <Text style={{ ...styles.bulletPoints, fontSize: 16 }}>
-            Reward Scheme
-          </Text>
-          <VStack alignItems="center" space={3}>
-            <HStack>
-              <Text
-                style={{
-                  alignSelf: "center",
-                  fontWeight: "bold",
-                  color: "#438672",
-                  fontSize: 28,
-                }}
-              >
-                150
-              </Text>
-              <Text style={{ marginLeft: 3, fontSize: 16, color: "grey" }}>
-                pts
-              </Text>
-            </HStack>
-            <Text style={{ color: "grey", lineHeight: 22.5 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim
-              aliquam tempus vulputate vestibulum eget sit vel tincidunt sit.
-              Quis faucibus in interdum arcu quis.
-            </Text>
-          </VStack>
-          <VStack alignItems="center" space={3}>
-            <HStack>
-              <Text
-                style={{
-                  alignSelf: "center",
-                  fontWeight: "bold",
-                  color: "#438672",
-                  fontSize: 28,
-                }}
-              >
-                300
-              </Text>
-              <Text style={{ marginLeft: 3, fontSize: 16, color: "grey" }}>
-                pts
-              </Text>
-            </HStack>
-            <Text style={{ color: "grey", lineHeight: 22.5 }}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Dignissim
-              aliquam tempus vulputate vestibulum eget sit vel tincidunt sit.
-              Quis faucibus in interdum arcu quis.
-            </Text>
-          </VStack>
-        </VStack>
-      </View>
     </VStack>
   </ScrollView>
 );
@@ -202,7 +145,7 @@ const ProfileScreen = (props: any) => {
         marginTop={3}
       >
         <HStack style={styles.topBar}>
-          <Text style={{ fontSize: 24, color: "#438672", fontWeight: "600" }}>
+          <Text style={{ fontSize: 24, color: "#FF7E41", fontWeight: "500" }}>
             Profile
           </Text>
           <Icon
