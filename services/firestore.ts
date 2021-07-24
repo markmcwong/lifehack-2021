@@ -34,6 +34,67 @@ export const createNewUserRecord = async (
   });
 };
 
+export const getRecommendedUsers = async (callback: Function) => {
+  const userList = [];
+  const querySnapshot = db
+    .collection("user")
+    .where("email", "!=", "")
+    .onSnapshot((querySnapshot: any) => {
+      const data: any = [];
+      querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+      });
+      callback(data);
+    });
+};
+
+export const setUserBio = async (bio: string, userId: string) => {
+  await db.collection("user").doc(userId).update({
+    bio: bio,
+  });
+};
+
+export const setUserMotherTongue = async (language: string, userId: string) => {
+  await db
+    .collection("user")
+    .doc(userId)
+    .update({
+      language: firebase.firestore.FieldValue.arrayUnion(language),
+    });
+};
+
+export const setUserFamiliarLang = async (
+  listOfLang: String[],
+  userId: string
+) => {
+  listOfLang.forEach((lang) => {
+    db.collection("user")
+      .doc(userId)
+      .update({
+        language: firebase.firestore.FieldValue.arrayUnion(lang),
+      });
+  });
+};
+
+export const setUserInterests = async (
+  listOfInterests: String[],
+  userId: string
+) => {
+  listOfInterests.forEach((int) => {
+    db.collection("user")
+      .doc(userId)
+      .update({
+        interest: firebase.firestore.FieldValue.arrayUnion(int),
+      });
+  });
+};
+
+export const setUserType = async (isYouth: boolean, userId: string) => {
+  db.collection("user").doc(userId).update({
+    isYouth: isYouth,
+  });
+};
+
 export const getUserRecord = async (userId: string) => {
   console.log("userId : " + userId);
   const record = await db.collection("user").doc(userId).get();
@@ -142,6 +203,15 @@ export const fetchGroupByUserID = (uid: string) => {
         //  groups = allGroups;
       });
   });
+};
+
+export const getUserDetails = async (userId: string, callback: Function) => {
+  const ref = await db.collection("user").doc(userId).get();
+
+  // console.log(data.data());
+  const data = ref.data();
+  console.log(data);
+  callback(data);
 };
 
 export const fetchMessagesByGroupId = (groupId: string) => {

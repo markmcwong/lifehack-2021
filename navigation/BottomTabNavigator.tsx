@@ -19,13 +19,18 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { TouchableOpacity } from "react-native";
 import PersonDetailScreen from "../screens/PersonDetail";
 import Achievement from "../screens/achievement";
+import selfIntroduction from "../screens/selfIntroduction";
+import selectStartingLanguage from "../screens/selectStartingLang";
+import selectFamiliarLang from "../screens/selectFamiliarLang";
+import selectInterests from "../screens/selectInterests";
+import selectYouthElderly from "../screens/selectYouthElderly";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
-      initialRouteName="TabFour"
+      initialRouteName="Tabbob5"
       tabBar={(props) => <MyTabBar {...props} />}
       tabBarOptions={{
         activeTintColor: "#EFB556",
@@ -40,6 +45,61 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabOne"
         component={TabOneNavigator}
+        options={{
+          // style: { backgroundColor: "#ffffff" },
+          // tabBarVisible: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Tabbob"
+        component={selfIntroduction}
+        options={{
+          // style: { backgroundColor: "#ffffff" },
+          // tabBarVisible: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Tabbob2"
+        component={selectStartingLanguage}
+        options={{
+          // style: { backgroundColor: "#ffffff" },
+          // tabBarVisible: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Tabbob3"
+        component={selectFamiliarLang}
+        options={{
+          // style: { backgroundColor: "#ffffff" },
+          // tabBarVisible: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Tabbob4"
+        component={selectInterests}
+        options={{
+          // style: { backgroundColor: "#ffffff" },
+          // tabBarVisible: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="home-outline" color={color} />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Tabbob5"
+        component={selectYouthElderly}
         options={{
           // style: { backgroundColor: "#ffffff" },
           // tabBarVisible: false,

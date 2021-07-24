@@ -27,7 +27,7 @@ import { Text } from "../components/Themed";
 import SlideUpDrawer from "../widgets/slideUpDrawer";
 import DepositScreen from "./DepositFormScreen";
 import GestureRecognizer from "react-native-swipe-gestures";
-import { fetchUsers } from "../services/firestore";
+import { fetchUsers, getRecommendedUsers } from "../services/firestore";
 import { Ionicons } from "@expo/vector-icons";
 
 const userListArray = [
@@ -72,14 +72,21 @@ function LogoTitle(user: any, setDrawerOpen: Function) {
 
 const TabOneScreen = (props: any) => {
   const [shouldDrawerOpen, setDrawerOpen] = useState(false);
+  const [listOfUsers, setlistOfUsers] = useState<any>(null);
 
   useEffect(() => {
     console.log(props);
-    fetchUsers(["English"]);
+    // fetchUsers(["English"]);
+    getRecommendedUsers((data: any) => setlistOfUsers(data));
     (async () => {
       // fetchGroupByUserID(props.user.uid);
     })();
   }, []);
+
+  useEffect(() => {
+    console.log("here is the list of users");
+    console.log(listOfUsers);
+  }, [listOfUsers]);
   return (
     <>
       <HStack
@@ -151,71 +158,81 @@ const TabOneScreen = (props: any) => {
           callback={(val) => setDrawerOpen(val)}
         />
         <ScrollView>
-          <View style={styles.container}>
-            {userListArray.map((item, array) => (
-              <Pressable
-                onPress={() => props.navigation.navigate("PersonDetailScreen")}
-                bg="#ffffff"
-                rounded="xl"
-                p={8}
-                style={{
-                  width: "90%",
-                  borderRadius: 20,
-                  marginBottom: "5%",
-                }}
-              >
-                <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                  <Avatar
-                    size="lg"
-                    source={require("../assets/images/robeJobs.jpg")}
-                  >
-                    SS
-                  </Avatar>
-                  <VStack
-                    space={2}
-                    w="100%"
-                    style={{
-                      alignItems: "flex-start",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <Text
+          {listOfUsers == null ? (
+            <React.Fragment />
+          ) : (
+            <View style={styles.container}>
+              {listOfUsers!.map((item: any, index: number) => (
+                <Pressable
+                  onPress={() =>
+                    props.navigation.navigate("PersonDetailScreen")
+                  }
+                  bg="#ffffff"
+                  rounded="xl"
+                  p={8}
+                  style={{
+                    width: "90%",
+                    borderRadius: 20,
+                    marginBottom: "5%",
+                  }}
+                >
+                  <HStack space={4} w="100%" style={{ alignItems: "center" }}>
+                    <Avatar
+                      size="lg"
+                      source={require("../assets/images/robeJobs.jpg")}
+                    >
+                      SS
+                    </Avatar>
+                    <VStack
+                      space={2}
+                      w="100%"
                       style={{
-                        fontSize: 24,
-                        fontWeight: "bold",
-                        color: "#46454C",
+                        alignItems: "flex-start",
+                        justifyContent: "flex-start",
                       }}
                     >
-                      {item.name}
-                    </Text>
-                    <ScrollView
-                      horizontal={true}
-                      width="80%"
-                      showsHorizontalScrollIndicator={false}
-                    >
-                      <HStack space={2} width="80%">
-                        {item.languages.map((language, index) => (
-                          <Badge
-                            variant={"outline"}
-                            colorScheme={index == 0 ? "orange" : "dark"}
-                            style={{
-                              padding: 12,
-                              paddingLeft: 12,
-                              paddingRight: 12,
-                              // paddingBottom: 0,
-                              borderRadius: 10,
-                            }}
-                          >
-                            {language}
-                          </Badge>
-                        ))}
-                      </HStack>
-                    </ScrollView>
-                  </VStack>
-                </HStack>
-              </Pressable>
-            ))}
-          </View>
+                      <Text
+                        style={{
+                          fontSize: 24,
+                          fontWeight: "bold",
+                          color: "#46454C",
+                        }}
+                      >
+                        {item.name}
+                      </Text>
+                      <ScrollView
+                        horizontal={true}
+                        width="80%"
+                        showsHorizontalScrollIndicator={false}
+                      >
+                        <HStack space={2} width="80%">
+                          {item.languages &&
+                            item.languages.map((language, index) => (
+                              <Badge
+                                variant={"outline"}
+                                colorScheme={index == 0 ? "orange" : "dark"}
+                                style={{
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  minWidth: 80,
+                                  padding: 12,
+                                  paddingLeft: 12,
+                                  paddingRight: 12,
+                                  // paddingBottom: 0,
+                                  borderRadius: 10,
+                                }}
+                              >
+                                {language}
+                              </Badge>
+                            ))}
+                        </HStack>
+                      </ScrollView>
+                    </VStack>
+                  </HStack>
+                </Pressable>
+              ))}
+            </View>
+          )}
         </ScrollView>
       </GestureRecognizer>
     </>
