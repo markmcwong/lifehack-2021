@@ -140,9 +140,10 @@ export default function BottomTabNavigator() {
 }
 
 function MyTabBar({ state, descriptors, navigation }) {
-  return state.index == 1 ? (
-    <></>
-  ) : (
+  return (
+    // state.index == 1 ? (
+    //   <></>
+    // ) :
     <View
       style={{
         flexDirection: "row",
@@ -275,7 +276,15 @@ const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
   return (
-    <TabTwoStack.Navigator>
+    <TabTwoStack.Navigator initialRouteName="ChatList">
+      <TabTwoStack.Screen
+        name="ChatList"
+        component={ChatListScreen}
+        options={{
+          header: () => null,
+          headerTitle: () => <Text></Text>,
+        }}
+      />
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={ChatBox}

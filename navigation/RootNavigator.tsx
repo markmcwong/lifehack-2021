@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import DepositScreen from "../screens/DepositFormScreen";
 import DepositStack from "./DepositNavigator";
 import PersonDetail from "../screens/PersonDetail";
+import chatBox from "../screens/chatBox";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -33,6 +34,14 @@ const RootNavigator = (props: any) => {
             }}
             name="PersonDetailScreen"
             component={PersonDetail}
+          />
+          <Stack.Screen
+            options={{
+              header: () => null,
+              headerTitle: () => null,
+            }}
+            name="Conversation"
+            component={chatBox}
           />
         </>
       )}

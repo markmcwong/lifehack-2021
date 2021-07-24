@@ -22,4 +22,5 @@ export type TabOneParamList = {
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+  ChatList: undefined;
 };
