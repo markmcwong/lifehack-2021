@@ -65,7 +65,9 @@ const selfIntroduction = (props: any) => {
             numberOfLines={4}
             borderRadius={20}
             placeholder="Your short self introduction!"
-            onChangeText={(e: string) => setBio(e)}
+            onChangeText={(e: string) => {
+              setBio(e);
+            }}
             value={bio}
           />
 
@@ -76,7 +78,14 @@ const selfIntroduction = (props: any) => {
             bottom={10}
             right={10}
             onPress={() => {
-              setUserBio(bio, user.uid);
+              setUserBio(
+                JSON.stringify(bio).substring(
+                  1,
+                  JSON.stringify(bio).length - 1
+                ),
+                user.uid
+              );
+              props.navigation.navigate("selectStartingLang");
             }}
             icon={
               <Icon

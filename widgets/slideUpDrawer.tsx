@@ -1,6 +1,6 @@
 import { Drawer, View, Text, HStack, Badge, Button } from "native-base";
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SwipeablePanel } from "rn-swipeable-panel";
 import { StyleSheet } from "react-native";
 
@@ -13,7 +13,7 @@ const options = [
   "Arabic",
 ];
 
-const SlideUpDrawer = ({ isPanelActive, callback }) => {
+const SlideUpDrawer = ({ isPanelActive, callback, setSelectedLanguages }) => {
   const [panelProps, setPanelProps] = useState({
     fullWidth: true,
     noBackgroundOpacity: false,
@@ -21,15 +21,14 @@ const SlideUpDrawer = ({ isPanelActive, callback }) => {
     showCloseButton: true,
     onClose: () => callback(false),
     onPressCloseButton: () => {
-      //   setIsOpen(false);
       callback(false);
     },
-    // ...or any prop you want
   });
 
-  //   const [isOpen, setIsOpen] = useState(isPanelActive);
   const [active, setActive] = useState<String[]>([]);
-
+  useEffect(() => {
+    setSelectedLanguages(active);
+  }, [active]);
   return (
     <SwipeablePanel {...panelProps} isActive={isPanelActive}>
       <View style={styles.container}>
@@ -37,6 +36,7 @@ const SlideUpDrawer = ({ isPanelActive, callback }) => {
         <HStack flexWrap="wrap">
           {options.map((option, index) => (
             <Button
+              key={index}
               marginRight={3}
               marginBottom={3}
               borderRadius={20}

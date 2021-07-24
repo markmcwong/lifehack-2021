@@ -10,6 +10,7 @@ import DepositScreen from "../screens/DepositFormScreen";
 import DepositStack from "./DepositNavigator";
 import PersonDetail from "../screens/PersonDetail";
 import chatBox from "../screens/chatBox";
+import NewUserStack from "./newUserNavigator";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,23 +27,30 @@ const RootNavigator = (props: any) => {
       ) : (
         // User is signed in
         <>
-          <Stack.Screen name="Auth" component={BottomTabNavigator} />
-          <Stack.Screen
-            options={{
-              header: () => null,
-              headerTitle: () => null,
-            }}
-            name="PersonDetailScreen"
-            component={PersonDetail}
-          />
-          <Stack.Screen
-            options={{
-              header: () => null,
-              headerTitle: () => null,
-            }}
-            name="Conversation"
-            component={chatBox}
-          />
+          {props.user.isNewUser ? (
+            // No token found, user isn't signed in
+            <Stack.Screen name="NewUser" component={NewUserStack} />
+          ) : (
+            <>
+              <Stack.Screen name="Auth" component={BottomTabNavigator} />
+              <Stack.Screen
+                options={{
+                  header: () => null,
+                  headerTitle: () => null,
+                }}
+                name="PersonDetailScreen"
+                component={PersonDetail}
+              />
+              <Stack.Screen
+                options={{
+                  header: () => null,
+                  headerTitle: () => null,
+                }}
+                name="Conversation"
+                component={chatBox}
+              />
+            </>
+          )}
         </>
       )}
       <Stack.Screen

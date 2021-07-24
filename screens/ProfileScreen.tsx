@@ -99,7 +99,12 @@ const SecondRoute = (state: any, props: any) => {
             fontFamily="Avenir"
           >
             {userDetails && userDetails.bio != ""
-              ? userDetails.bio
+              ? (userDetails.bio as string).split("\\n").map((x, index) => (
+                  <Text>
+                    {index == 0 ? "" : "\n"}
+                    {x}
+                  </Text>
+                ))
               : "This user has no user information yet."}
           </Text>
           <Divider size={2} my={5} />
@@ -156,7 +161,13 @@ const ProfileScreen = (props: any) => {
         marginTop={3}
       >
         <HStack style={styles.topBar}>
-          <Text style={{ fontSize: 24, color: "#FF7E41", fontWeight: "500" }}>
+          <Text
+            style={{
+              fontSize: 24,
+              color: props.user.isYouth ? "#FF7E41" : "#78C9A7",
+              fontWeight: "500",
+            }}
+          >
             Profile
           </Text>
           <Icon

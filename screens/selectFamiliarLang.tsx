@@ -168,6 +168,7 @@ const selectFamiliarLang = (props: any) => {
             right={10}
             onPress={() => {
               setUserFamiliarLang(active, user.uid);
+              props.navigation.navigate("selectInterests");
             }}
             icon={
               <Icon

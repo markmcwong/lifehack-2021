@@ -32,24 +32,48 @@ export const createNewUserRecord = async (
   db.collection("user").doc(userId).set({
     email: email,
     name: name,
+    interests: [],
   });
 };
 
-export const getRecommendedUsers = async (callback: Function) => {
+export const getRecommendedUsers = async (
+  isYouth: boolean,
+  callback: Function,
+  languages: string[]
+) => {
   const userList = [];
-  const querySnapshot = db
-    .collection("user")
-    .where("email", "!=", "")
-    .onSnapshot((querySnapshot: any) => {
-      const data: any = [];
-      querySnapshot.forEach((doc) => {
-        data.push(doc.data());
+  console.log("language length " + languages.length);
+  if (languages.length == 0) {
+    const querySnapshot = await db
+      .collection("user")
+      .where("isYouth", "==", !isYouth)
+      .onSnapshot((querySnapshot: any) => {
+        const data: any = [];
+        // console.log("length: " + querySnapshot.length);
+        querySnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+        callback(data);
       });
-      callback(data);
-    });
+    return querySnapshot;
+  } else {
+    const querySnapshot = db
+      .collection("user")
+      .where("isYouth", "==", !isYouth)
+      .where("languages", "array-contains-any", languages)
+      .onSnapshot((querySnapshot: any) => {
+        const data: any = [];
+        querySnapshot.forEach((doc) => {
+          data.push({ id: doc.id, ...doc.data() });
+        });
+        callback(data);
+      });
+    return querySnapshot;
+  }
 };
 
 export const setUserBio = async (bio: string, userId: string) => {
+  console.log(bio);
   await db.collection("user").doc(userId).update({
     bio: bio,
   });
@@ -60,7 +84,7 @@ export const setUserMotherTongue = async (language: string, userId: string) => {
     .collection("user")
     .doc(userId)
     .update({
-      language: firebase.firestore.FieldValue.arrayUnion(language),
+      languages: firebase.firestore.FieldValue.arrayUnion(language),
     });
 };
 
@@ -72,7 +96,7 @@ export const setUserFamiliarLang = async (
     db.collection("user")
       .doc(userId)
       .update({
-        language: firebase.firestore.FieldValue.arrayUnion(lang),
+        languages: firebase.firestore.FieldValue.arrayUnion(lang),
       });
   });
 };
@@ -85,7 +109,7 @@ export const setUserInterests = async (
     db.collection("user")
       .doc(userId)
       .update({
-        interest: firebase.firestore.FieldValue.arrayUnion(int),
+        interests: firebase.firestore.FieldValue.arrayUnion(int),
       });
   });
 };
@@ -100,7 +124,11 @@ export const getUserRecord = async (userId: string) => {
   console.log("userId : " + userId);
   const record = await db.collection("user").doc(userId).get();
   console.log("current user: " + record.data()!);
-  store.dispatch({ type: "READ_USER_DETAILS", name: record.data()!.name });
+  store.dispatch({
+    type: "READ_USER_DETAILS",
+    name: record.data()!.name,
+    isYouth: record.data()!.isYouth,
+  });
 };
 
 export const addDepositRecord = async (
@@ -277,6 +305,51 @@ export const fetchUserDetail = async (ids: any[], callback: Function) => {
   // console.log(users);
   callback(users);
   // return users;
+};
+
+export const connectTwoUsers = async (ids: string[]) => {
+  const messageRef = db.collection("message");
+  let arefs: string[] = [];
+  let brefs: string[] = [];
+  let promises: Promise<any>[] = [];
+  promises.push(
+    db
+      .collection("message")
+      .where("members", "array-contains", db.collection("user").doc(ids[0]))
+      .get()
+      .then((docs) => {
+        arefs = docs.docs.map((x) => x.id);
+      })
+  );
+  promises.push(
+    db
+      .collection("message")
+      .where("members", "array-contains", db.collection("user").doc(ids[1]))
+      .get()
+      .then((docs) => {
+        brefs = docs.docs.map((x) => x.id);
+      })
+  );
+  await Promise.all(promises);
+  const intersected = arefs.filter((element) => brefs.includes(element));
+  console.log(intersected);
+  if (
+    intersected.length == 0 ||
+    intersected == null ||
+    brefs == null ||
+    arefs == null
+  ) {
+    console.log("yes"!);
+    const newMessage = await messageRef.add({
+      lastText: "Start your new conversation now!",
+      lastSent: firebase.firestore.FieldValue.serverTimestamp(),
+      members: ids.map((x) => db.collection("user").doc(x)),
+    });
+    return newMessage.id;
+  } else {
+    console.log("no!");
+    return intersected[0];
+  }
 };
 // export const fetchConversation = async () => {
 //   let messages;

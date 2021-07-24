@@ -20,12 +20,13 @@ export default function App() {
   firebase.auth().onAuthStateChanged((user) => {
     if (user != null) {
       console.log("We are authenticated now!");
-      store.dispatch({
-        type: "LOGIN",
-        name: user?.displayName,
-        uid: user?.uid,
-      });
-      getUserRecord(user?.uid);
+      getUserRecord(user?.uid).then((x) =>
+        store.dispatch({
+          type: "LOGIN",
+          name: user?.displayName,
+          uid: user?.uid,
+        })
+      );
       // useNavigation().navigate("Auth");
     } else {
       store.dispatch({

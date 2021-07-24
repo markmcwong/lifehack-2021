@@ -36,6 +36,7 @@ import {
   setUserFamiliarLang,
   setUserInterests,
 } from "../services/firestore";
+import store from "../state/store";
 
 const mapStateToProps = (state: any, props: any) => {
   return { user: state.user };
@@ -161,10 +162,15 @@ const selectInterests = (props: any) => {
                   color: active.indexOf(option) != -1 ? "#FFF" : "#000",
                 }}
                 onPress={() => {
-                  active.indexOf(option) != -1
-                    ? setActive(active.filter((x) => x != option))
-                    : setActive([...active, option]);
-                  console.log(active);
+                  if (active.indexOf(option) != -1) {
+                    setActive(active.filter((x) => x != option));
+                  } else {
+                    if (active.length != 3) {
+                      setActive([...active, option]);
+                    } else {
+                      alert("You can only choose up to 3 interests!");
+                    }
+                  }
                 }}
               >
                 {option}
@@ -178,7 +184,12 @@ const selectInterests = (props: any) => {
             bottom={10}
             right={10}
             onPress={() => {
+              if (active.length == 0) {
+                alert("You have to choose at least one interest");
+              }
               setUserInterests(active, user.uid);
+              store.dispatch({ type: "FINISH_ONBOARD" });
+              // props.navigation.navigate("Auth");
             }}
             icon={
               <Icon

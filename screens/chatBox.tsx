@@ -74,7 +74,12 @@ const ChatBox = ({ route, user, navigation }) => {
   );
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
-      <View style={styles.container}>
+      <View
+        style={{
+          ...styles.container,
+          // backgroundColor: user.isYouth ? "#FF7200" : "#78C9A7",
+        }}
+      >
         <HStack
           style={{
             backgroundColor: "#FFF",
@@ -86,6 +91,12 @@ const ChatBox = ({ route, user, navigation }) => {
             width: "100%",
             // borderBottomLeftRadius: 20,
             // borderBottomRightRadius: 20,
+            backgroundColor: "#fff",
+            shadowColor: "#000",
+            shadowOffset: { width: 1, height: 5 },
+            shadowOpacity: 0.1,
+            shadowRadius: 5,
+            elevation: 5,
           }}
         >
           <IconButton
@@ -102,7 +113,7 @@ const ChatBox = ({ route, user, navigation }) => {
           ></IconButton>
           <Button
             variant="unstyled"
-            onPress={() => props.navigation.navigate("TabFour")}
+            // onPress={() => navigation.navigate("TabFour")}
           >
             <Image
               source={{
@@ -127,6 +138,7 @@ const ChatBox = ({ route, user, navigation }) => {
             renderInputToolbar={renderInputToolbar}
             renderComposer={renderComposer}
             renderSend={renderSend}
+            // render
           />
         </VStack>
       </View>
@@ -178,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "scroll",
     // justifyContent: "center",
-    backgroundColor: "#ffe4b8",
+    // backgroundColor: "#ffe4b8",
   },
   title: {
     fontSize: 20,

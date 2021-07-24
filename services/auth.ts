@@ -36,6 +36,7 @@ export async function loginWithGoogle() {
         type: "LOGIN",
         name: user?.displayName,
         uid: user?.uid,
+        isNewUser: result.additionalUserInfo?.isNewUser ?? false,
       });
     })
     .catch((error) => {
@@ -65,6 +66,7 @@ export async function register(name: string, email: string, password: string) {
     type: "LOGIN",
     name: result.user?.displayName,
     uid: result.user?.uid,
+    isNewUser: true,
   });
 }
 
