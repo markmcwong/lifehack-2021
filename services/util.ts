@@ -29,9 +29,7 @@ export const parseGroups = (uid: string, data: any) => {
       lastText: item.lastText,
       lastSent: (item.lastSent as firebase.firestore.Timestamp).toDate(),
       members: item.members.filter(
-        (x) =>
-          (x as firestoreTypes.DocumentReference) !=
-          firebase.firestore().collection("user").doc(uid)
+        (x) => (x as firestoreTypes.DocumentReference).id != uid
       )[0],
     };
   });
