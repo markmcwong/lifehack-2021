@@ -3,3 +3,6 @@
  3. type in yarn start to start up the app
  4. Press I to open on iOS Simulator 
  ⁃ or download Expo Go from Apps Store and scan the QR code from the terminal to try on your mobile
+ 
+Application Deployment video guide
+https://youtu.be/3icotKcGOwE
