@@ -14,7 +14,7 @@ const initialState = {
 };
 
 export default (state = initialState, action: any) => {
-  console.log(state);
+  // console.log(state);
   switch (action.type) {
     case actions.LOGIN:
       return {

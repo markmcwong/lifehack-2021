@@ -1,83 +1,136 @@
-import { createStackNavigator } from "@react-navigation/stack";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import {
   VStack,
-  Image,
-  Button,
-  HStack,
-  Box,
-  Avatar,
-  Badge,
   Icon,
-  Center,
   Text,
   View,
+  IconButton,
+  Button,
+  HStack,
+  Image,
 } from "native-base";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { StyleSheet, YellowBox } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { withSafeAreaInsets } from "react-native-safe-area-context";
-import { paddingLeft } from "styled-system";
-
-import EditScreenInfo from "../components/EditScreenInfo";
-import DepositScreen from "./DepositFormScreen";
-import firestore from "firebase/firestore";
-import { GiftedChat } from "react-native-gifted-chat";
+import { LogBox, StyleSheet } from "react-native";
+import {
+  Bubble,
+  Composer,
+  GiftedChat,
+  InputToolbar,
+  Send,
+} from "react-native-gifted-chat";
 import { connect } from "react-redux";
+import { fetchMessagesByGroupId, sendNewMessage } from "../services/firestore";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-YellowBox.ignoreWarnings(["Seeting a timer for a long period of time"]);
-
-const languages = ["English", "Japanese", "Mandarin"];
-const interests = ["Classical Music", "Desserts", "Tai Chi"];
-
-function LogoTitle() {
-  return (
-    <VStack
-      alignItems="flex-start"
-      // width="100%"
-      space={3}
-      left={8}
-      marginTop={-15}
-    >
-      <Text style={{ fontSize: 16, color: "#FFF" }}>Welcome!</Text>
-      <Text style={{ fontSize: 24, color: "#FFF", marginTop: -5 }}>
-        {Date()
-          .toLocaleString()
-          .slice(0, 3)
-          .concat(", ", Date().toLocaleString().slice(4, 15))}
-      </Text>
-    </VStack>
-  );
-}
+LogBox.ignoreAllLogs();
 
 const mapStateToProps = (state: any, props: any) => {
   return { user: state.user };
 };
 
-const ChatBox = (props: any) => {
-  const messages: any = useState(["hello"]);
+const ChatBox = ({ route, user, navigation }) => {
+  const [messages, setMessages] = useState<any[]>([]);
+  useLayoutEffect(() => {
+    fetchMessagesByGroupId(route.params.id, (val: any) =>
+      setMessages(
+        val.map((x) => {
+          console.log(x);
+          return {
+            ...x,
+            user: {
+              _id: x.user._id,
+              name: user.uiduid == x.user._id ? user.name : route.params.name,
+            },
+          };
+        })
+      )
+    );
+  }, []);
+  useEffect(() => {
+    // console.log();
+  }, []);
 
+  const onSend = useCallback((messages = []) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
+    );
+    // console.log(messages[0].text);
+    sendNewMessage(route.params.id, messages[0].text, user.uid);
+  }, []);
+
+  const renderInputToolbar = (props) => (
+    <InputToolbar {...props} containerStyle={styles.inputToolbar} />
+  );
+
+  const renderComposer = (props) => (
+    <Composer {...props} textInputStyle={styles.textInput} />
+  );
+
+  const renderSend = (props) => (
+    <Send {...props} containerStyle={styles.sendBtn}>
+      <Icon as={MaterialCommunityIcons} name="send" color="#3979ee" size={8} />
+    </Send>
+  );
   return (
-    <>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
       <View style={styles.container}>
-        <VStack h="100%" w="100%">
-          <Icon
-            as={MaterialCommunityIcons}
-            name="arrow-left"
-            color="#FFF"
-            size={10}
-            // marginTop={100}
-            // left={30}
-            style={{ position: "absolute", top: 40, left: 30 }}
-            // onPress={() => navigation.goBack()}
+        <HStack
+          style={{
+            backgroundColor: "#FFF",
+            alignSelf: "start",
+            alignItems: "center",
+            // justifyContent: "space-between",
+            // position: "absolute",
+            height: 70,
+            width: "100%",
+            // borderBottomLeftRadius: 20,
+            // borderBottomRightRadius: 20,
+          }}
+        >
+          <IconButton
+            zIndex={20}
+            icon={
+              <Icon
+                as={MaterialCommunityIcons}
+                name="arrow-left"
+                color="grey"
+                size={10}
+              />
+            }
+            onPress={() => navigation.goBack()}
+          ></IconButton>
+          <Button
+            variant="unstyled"
+            onPress={() => props.navigation.navigate("TabFour")}
+          >
+            <Image
+              source={{
+                uri: "https://wallpaperaccess.com/full/317501.jpg",
+              }}
+              alt="profile"
+              height={39}
+              width={39}
+              borderRadius={20}
+            />
+          </Button>
+          <Text fontSize={18} fontWeight={600}>
+            {route.params.name}
+          </Text>
+        </HStack>
+        <VStack flex={1} w="100%">
+          <GiftedChat
+            renderUsernameOnMessage={true}
+            onSend={(messages) => onSend(messages)}
+            messages={messages}
+            user={{ _id: user.uid }}
+            renderInputToolbar={renderInputToolbar}
+            renderComposer={renderComposer}
+            renderSend={renderSend}
           />
-          <Text>{props.user.name} asdsdhi</Text>
-          <GiftedChat messages={messages} user={props.user} />
         </VStack>
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
@@ -97,10 +150,31 @@ export default connect(mapStateToProps)(ChatBox);
 // export default DepositStack;
 
 const styles = StyleSheet.create({
+  sendBtn: {
+    paddingBottom: 5,
+    paddingRight: 15,
+  },
+  textInput: {
+    backgroundColor: "#ececec",
+    marginLeft: 20,
+    paddingLeft: 10,
+    paddingTop: 10,
+    // paddingBottom: 20,
+    marginRight: 20,
+    borderRadius: 20,
+  },
+  inputToolbar: {
+    // backgroundColor: "grey",
+    // paddingLeft: 20,
+    // paddingRight: 20,
+    // height: 60,
+    paddingTop: 5,
+    marginBottom: -5,
+  },
   container: {
     flex: 1,
-    paddingTop: 20,
-    paddingBottom: 12,
+    // paddingTop: 20,
+    // paddingBottom: 12,
     alignItems: "center",
     overflow: "scroll",
     // justifyContent: "center",

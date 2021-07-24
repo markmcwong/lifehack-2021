@@ -6,6 +6,7 @@ import uuid from "react-native-uuid";
 import * as ImagePicker from "expo-image-picker";
 import { data } from "../screens/ProfileScreen";
 import * as firestoreTypes from "@firebase/firestore-types";
+import { parseGroups, parseMessages } from "./util";
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -185,60 +186,104 @@ const handleImagePicked = async (
   }
 };
 
-export const fetchGroupByUserID = (uid: string) => {
-  let groups;
-  console.log("start");
-  return new Promise((resolve, reject) => {
-    const groupRef = db.collection("pair");
-    groupRef
-      .where("members", "array-contains", db.collection("user").doc(uid))
-      .onSnapshot((querySnapshot: any) => {
-        //  const allGroups = []
-        querySnapshot.forEach((doc) => {
-          console.log(doc.data());
-          //  const data = doc.data()
-          //  data.id = doc.id
-          //  if (data.recentMessage) allGroups.push(data)
-        });
-        //  groups = allGroups;
+export const fetchGroupByUserID = (uid: string, callback: Function) => {
+  console.log("start this" + uid);
+  const groupRef = db.collection("message");
+  groupRef
+    .where("members", "array-contains", db.collection("user").doc(uid))
+    .onSnapshot((querySnapshot: firestoreTypes.QuerySnapshot) => {
+      console.log("hiii" + querySnapshot.size);
+      let groups: any = [];
+      querySnapshot.forEach((doc: any) => {
+        const id = doc.id;
+        console.log("hi");
+        if (doc) groups.push({ id, ...doc.data() });
       });
-  });
+      console.log(groups);
+      callback(parseGroups(uid, groups));
+    });
 };
 
 export const getUserDetails = async (userId: string, callback: Function) => {
   const ref = await db.collection("user").doc(userId).get();
-
   // console.log(data.data());
   const data = ref.data();
   console.log(data);
   callback(data);
 };
 
-export const fetchMessagesByGroupId = (groupId: string) => {
-  let messages;
-  console.log("start");
-  return new Promise((resolve, reject) => {
-    const messageRef = db.collection("messages");
-    messageRef
-      .doc(groupId.trim())
-      .collection("messages")
-      .orderBy("sentAt")
-      .onSnapshot((querySnapshot) => {
-        const allMessages: any = [];
-        querySnapshot.forEach((doc) => {
-          if (doc) allMessages.push(doc.data());
-        });
-        messages = allMessages;
+export const fetchMessagesByGroupId = async (
+  groupId: string,
+  callback: Function
+) => {
+  const messageRef = db.collection("message");
+  messageRef
+    .doc(groupId)
+    .collection("messages")
+    .orderBy("createdAt", "desc")
+    .onSnapshot((querySnapshot) => {
+      let messages: any = [];
+      querySnapshot.forEach((doc: any) => {
+        const id = doc.id;
+        // console.log(doc.data());
+        if (doc) messages.push({ id, ...doc.data() });
       });
-  });
+      callback(parseMessages(messages));
+    });
 };
 
 export const fetchUsers = async (languages: string[]) => {
   let messages;
-  console.log("start");
+  // console.log("start");
   const userRef = db.collection("user");
   const snapshot: firestoreTypes.QuerySnapshot = await userRef
     .where("languages", "array-contains-any", languages)
     .get();
   snapshot.docs.forEach((x) => console.log(x.data()));
 };
+
+export const sendNewMessage = async (
+  id: string,
+  message: string,
+  userId: string
+) => {
+  const messageRef = db.collection("message");
+  // console.log(message);
+  const newMessage = await messageRef.doc(id).collection("messages").add({
+    text: message,
+    sentBy: userId,
+    createdAt: firebase.firestore.Timestamp.now(),
+  });
+  messageRef.doc(id).update({
+    lastText: message,
+    lastSent: firebase.firestore.Timestamp.now(),
+  });
+  // console.log(newMessage);
+};
+
+export const fetchUserDetail = async (ids: any[], callback: Function) => {
+  let promises: Promise<any>[] = [];
+  let users: any = [];
+  ids.forEach(async (id: any) => {
+    promises.push(
+      id.get().then((doc) => {
+        const data: any = doc.data();
+        // console.log(data);
+        users.push({ email: data.email, name: data.name });
+      })
+    );
+  });
+  await Promise.all(promises);
+  // console.log(users);
+  callback(users);
+  // return users;
+};
+// export const fetchConversation = async () => {
+//   let messages;
+//   console.log("start");
+//   const userRef = db.collection("user");
+//   const snapshot: firestoreTypes.QuerySnapshot = await userRef
+//     .where("languages", "array-contains-any", languages)
+//     .get();
+//   snapshot.docs.forEach((x) => console.log(x.data()));
+// };
