@@ -1,5 +1,7 @@
 import firebase from "firebase";
 import "firebase/firestore";
+import * as firestoreTypes from "@firebase/firestore-types";
+
 export const parseMessages = (data: any) => {
   return data.map((item: any, index: number) => {
     console.log(item.id);
@@ -20,13 +22,16 @@ export const parseMessages = (data: any) => {
 };
 
 export const parseGroups = (uid: string, data: any) => {
+  console.log("string " + uid);
   return data.map((item: any, index: number) => {
     return {
       id: item.id,
       lastText: item.lastText,
       lastSent: (item.lastSent as firebase.firestore.Timestamp).toDate(),
       members: item.members.filter(
-        (x) => x != firebase.firestore().collection("user").doc(uid)
+        (x) =>
+          (x as firestoreTypes.DocumentReference) !=
+          firebase.firestore().collection("user").doc(uid)
       )[0],
     };
   });

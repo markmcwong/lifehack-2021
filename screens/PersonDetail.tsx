@@ -29,6 +29,8 @@ import { paddingLeft } from "styled-system";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import DepositScreen from "./DepositFormScreen";
+import { connectTwoUsers, getUserDetails } from "../services/firestore";
+import { useSelector } from "react-redux";
 
 const languages = ["English", "Japanese", "Mandarin"];
 const interests = ["Classical Music", "Desserts", "Tai Chi"];
@@ -53,15 +55,12 @@ function LogoTitle() {
   );
 }
 
-export default function PersonDetailScreen({ navigation }) {
-  const [scanned, setScanned] = useState(false);
-  const [hasPermission, setHasPermission] = useState(false);
-
+export default function PersonDetailScreen({ navigation, route }) {
+  const user = useSelector((state: any) => state.user);
+  const [isShown, setIsShown] = useState(true);
+  const [userDetails, setUserDetails] = useState(null);
   useEffect(() => {
-    (async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
+    getUserDetails(route.params.id, (val: any) => setUserDetails(val));
   }, []);
   return (
     <>
@@ -73,11 +72,15 @@ export default function PersonDetailScreen({ navigation }) {
             w="100%"
             h="50%"
             alt="DisplayPicture"
-            source={require("../assets/images/asian-elderly-woman-feeling-happy-smiling-looking-camera-while-relax-kitchen-home.png")}
+            source={
+              !user.isYouth
+                ? require("../assets/images/robeJobs.jpg")
+                : require("../assets/images/asian-elderly-woman-feeling-happy-smiling-looking-camera-while-relax-kitchen-home.png")
+            }
           />
           <VStack h="100%" w="100%" alignItems="flex-start">
             <Box
-              bg="#EFB556"
+              bg={user.isYouth ? "#EFB556" : "#78C9A7"}
               borderTopRadius={25}
               paddingLeft={8}
               py={7}
@@ -101,7 +104,7 @@ export default function PersonDetailScreen({ navigation }) {
                   marginBottom: "1%",
                 }}
               >
-                Morikawa
+                {userDetails && userDetails.name}
               </Text>
               <Text
                 style={{
@@ -134,24 +137,32 @@ export default function PersonDetailScreen({ navigation }) {
                       alignItems: "center",
                     }}
                   >
-                    {languages.map((language, index) => (
-                      <Badge
-                        bg="#ffffff"
-                        variant={"outline"}
-                        colorScheme={index == 0 ? "orange" : "light"}
-                        style={{
-                          alignItems: "center",
-                          minWidth: 80,
-                          padding: 12,
-                          paddingLeft: 12,
-                          paddingRight: 12,
-                          // paddingBottom: 0,
-                          borderRadius: 20,
-                        }}
-                      >
-                        {language}
-                      </Badge>
-                    ))}
+                    {userDetails &&
+                      userDetails.languages &&
+                      userDetails.languages.map((language, index) => (
+                        <Badge
+                          bg="#ffffff"
+                          variant={"outline"}
+                          colorScheme={
+                            index == 0
+                              ? user.isYouth
+                                ? "orange"
+                                : "green"
+                              : "light"
+                          }
+                          style={{
+                            alignItems: "center",
+                            minWidth: 80,
+                            padding: 12,
+                            paddingLeft: 12,
+                            paddingRight: 12,
+                            // paddingBottom: 0,
+                            borderRadius: 20,
+                          }}
+                        >
+                          {language}
+                        </Badge>
+                      ))}
                   </HStack>
                 </ScrollView>
               </Container>
@@ -197,26 +208,28 @@ export default function PersonDetailScreen({ navigation }) {
                   style={{ marginLeft: "3%" }}
                   showsHorizontalScrollIndicator={false}
                 >
-                  {interests.map((interest, index) => (
-                    <Badge
-                      variant={"outline"}
-                      bg="#ffffff"
-                      colorScheme="orange"
-                      style={{
-                        alignItems: "center",
-                        minWidth: 80,
-                        padding: 12,
-                        paddingLeft: 12,
-                        paddingRight: 12,
-                        marginRight: 12,
-                        height: 40,
-                        // paddingBottom: 0,
-                        borderRadius: 20,
-                      }}
-                    >
-                      {interest}
-                    </Badge>
-                  ))}
+                  {userDetails &&
+                    userDetails.interests &&
+                    userDetails.interests.map((interest, index) => (
+                      <Badge
+                        variant={"outline"}
+                        bg="#ffffff"
+                        colorScheme={user.isYouth ? "orange" : "green"}
+                        style={{
+                          alignItems: "center",
+                          minWidth: 80,
+                          padding: 12,
+                          paddingLeft: 12,
+                          paddingRight: 12,
+                          marginRight: 12,
+                          height: 40,
+                          // paddingBottom: 0,
+                          borderRadius: 20,
+                        }}
+                      >
+                        {interest}
+                      </Badge>
+                    ))}
                 </ScrollView>
               </Container>
               <Text
@@ -236,24 +249,42 @@ export default function PersonDetailScreen({ navigation }) {
                   // justifyContent: "flex-start",
                 }}
               >
-                {
-                  "I am Morikawa.\nFirst time using this app.\nHope to chat more with our young generation."
-                }
+                {userDetails && userDetails.bio != ""
+                  ? (userDetails.bio as string).split("\\n").map((x, index) => (
+                      <Text>
+                        {index == 0 ? "" : "\n"}
+                        {x}
+                      </Text>
+                    ))
+                  : "This user has no user information yet."}
               </Text>
-              <Fab
-                position="absolute"
-                size="sm"
-                backgroundColor="orange"
-                icon={
-                  <Icon
-                    // position="absolute"
-                    size="sm"
-                    color="white"
-                    as={Ionicons}
-                    name="chatbubble-outline"
-                  />
-                }
-              />
+              {isShown && (
+                <Fab
+                  position="absolute"
+                  size="sm"
+                  backgroundColor={user.isYouth ? "orange" : "#78C9A7"}
+                  onPress={async () => {
+                    const id = await connectTwoUsers([
+                      user.uid,
+                      route.params.id,
+                    ]);
+                    navigation.navigate("Conversation", {
+                      id: id,
+                      name: userDetails.name,
+                    });
+                    setIsShown(false);
+                  }}
+                  icon={
+                    <Icon
+                      // position="absolute"
+                      size="sm"
+                      color="white"
+                      as={Ionicons}
+                      name="chatbubble-outline"
+                    />
+                  }
+                />
+              )}
             </VStack>
           </VStack>
           <Icon

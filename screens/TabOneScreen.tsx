@@ -13,22 +13,23 @@ import {
   IconButton,
   Icon,
   View,
+  Text,
 } from "native-base";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { LogBox, StyleSheet } from "react-native";
 import { connect } from "react-redux";
 import { ScrollView } from "react-native-gesture-handler";
 import { withSafeAreaInsets } from "react-native-safe-area-context";
 import { paddingLeft } from "styled-system";
 
 import EditScreenInfo from "../components/EditScreenInfo";
-import { Text } from "../components/Themed";
 import SlideUpDrawer from "../widgets/slideUpDrawer";
-import DepositScreen from "./DepositFormScreen";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { fetchUsers, getRecommendedUsers } from "../services/firestore";
 import { Ionicons } from "@expo/vector-icons";
+
+LogBox.ignoreAllLogs();
 
 const userListArray = [
   {
@@ -73,25 +74,29 @@ function LogoTitle(user: any, setDrawerOpen: Function) {
 const TabOneScreen = (props: any) => {
   const [shouldDrawerOpen, setDrawerOpen] = useState(false);
   const [listOfUsers, setlistOfUsers] = useState<any>(null);
-
+  const [selectedLanguages, setSelectedLanguages] = useState<any>([]);
+  const [querySnapshot, setQuerySnapshot] = useState<any>(null);
   useEffect(() => {
-    console.log(props);
-    // fetchUsers(["English"]);
-    getRecommendedUsers((data: any) => setlistOfUsers(data));
-    (async () => {
-      // fetchGroupByUserID(props.user.uid);
-    })();
-  }, []);
+    console.log(selectedLanguages);
+    typeof querySnapshot == Function && querySnapshot();
+    const test = getRecommendedUsers(
+      props.user.isYouth,
+      (data: any) => setlistOfUsers(data),
+      selectedLanguages
+    );
+    setQuerySnapshot(test);
+  }, [selectedLanguages]);
 
   useEffect(() => {
     console.log("here is the list of users");
     console.log(listOfUsers);
   }, [listOfUsers]);
+
   return (
     <>
       <HStack
         style={{
-          backgroundColor: "#ff9f00",
+          backgroundColor: props.user.isYouth ? "#ff9f00" : "#78C9A7",
           alignSelf: "start",
           alignItems: "center",
           justifyContent: "space-between",
@@ -138,102 +143,138 @@ const TabOneScreen = (props: any) => {
             <Icon
               // position="absolute"
               size="sm"
-              color="orange"
+              color={props.user.isYouth ? "orange" : "#78C9A7"}
               as={Ionicons}
               name="filter-outline"
             />
           }
         />
       </View>
+      <ScrollView
+        style={{ backgroundColor: props.user.isYouth ? "#ffe4b8" : "#B4E5D1" }}
+      >
+        {listOfUsers == null ? (
+          <React.Fragment />
+        ) : (
+          <View
+            style={{
+              ...styles.container,
+              paddingBottom: 60,
+            }}
+          >
+            {listOfUsers!.map((item: any, index: number) => (
+              <Pressable
+                onPress={() =>
+                  props.navigation.navigate("PersonDetailScreen", {
+                    id: item.id,
+                  })
+                }
+                bg="#ffffff"
+                rounded="xl"
+                p={8}
+                style={{
+                  width: "90%",
+                  borderRadius: 20,
+                  marginBottom: "5%",
+                }}
+              >
+                <HStack space={4} w="100%" style={{ alignItems: "center" }}>
+                  <Avatar
+                    size="lg"
+                    source={require("../assets/images/robeJobs.jpg")}
+                  >
+                    SS
+                  </Avatar>
+                  <VStack
+                    space={2}
+                    w="100%"
+                    style={{
+                      alignItems: "flex-start",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 24,
+                        fontWeight: "bold",
+                        color: "#46454C",
+                      }}
+                    >
+                      {item.name}
+                    </Text>
+                    <ScrollView
+                      horizontal={true}
+                      width="80%"
+                      showsHorizontalScrollIndicator={false}
+                    >
+                      <HStack space={2} width="80%">
+                        {item.languages &&
+                          item.languages.map((language, index) => (
+                            <Badge
+                              variant={"outline"}
+                              colorScheme={
+                                index == 0
+                                  ? props.user.isYouth
+                                    ? "orange"
+                                    : "green"
+                                  : "dark"
+                              }
+                              style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                minWidth: 80,
+                                padding: 12,
+                                paddingLeft: 12,
+                                paddingRight: 12,
+                                // paddingBottom: 0,
+                                borderRadius: 10,
+                              }}
+                            >
+                              <Text
+                                fontSize={13}
+                                w="100%"
+                                textAlign="center"
+                                style={{
+                                  color:
+                                    index == 0
+                                      ? props.user.isYouth
+                                        ? "orange"
+                                        : "green"
+                                      : "dark",
+                                }}
+                              >
+                                {language}
+                              </Text>
+                            </Badge>
+                          ))}
+                      </HStack>
+                    </ScrollView>
+                  </VStack>
+                </HStack>
+              </Pressable>
+            ))}
+          </View>
+        )}
+      </ScrollView>
       <GestureRecognizer
         onSwipeUp={() => {
           console.log("swiped");
           setDrawerOpen(true);
         }}
         onSwipeDown={() => setDrawerOpen(false)}
-        style={styles.container}
+        style={{
+          height: "15%",
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          zIndex: 20,
+        }}
       >
         <SlideUpDrawer
           isPanelActive={shouldDrawerOpen}
           callback={(val) => setDrawerOpen(val)}
+          setSelectedLanguages={setSelectedLanguages}
         />
-        <ScrollView>
-          {listOfUsers == null ? (
-            <React.Fragment />
-          ) : (
-            <View style={styles.container}>
-              {listOfUsers!.map((item: any, index: number) => (
-                <Pressable
-                  onPress={() =>
-                    props.navigation.navigate("PersonDetailScreen")
-                  }
-                  bg="#ffffff"
-                  rounded="xl"
-                  p={8}
-                  style={{
-                    width: "90%",
-                    borderRadius: 20,
-                    marginBottom: "5%",
-                  }}
-                >
-                  <HStack space={4} w="100%" style={{ alignItems: "center" }}>
-                    <Avatar
-                      size="lg"
-                      source={require("../assets/images/robeJobs.jpg")}
-                    >
-                      SS
-                    </Avatar>
-                    <VStack
-                      space={2}
-                      w="100%"
-                      style={{
-                        alignItems: "flex-start",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 24,
-                          fontWeight: "bold",
-                          color: "#46454C",
-                        }}
-                      >
-                        {item.name}
-                      </Text>
-                      <ScrollView
-                        horizontal={true}
-                        width="80%"
-                        showsHorizontalScrollIndicator={false}
-                      >
-                        <HStack space={2} width="80%">
-                          {item.languages &&
-                            item.languages.map((language, index) => (
-                              <Badge
-                                variant={"outline"}
-                                colorScheme={index == 0 ? "orange" : "dark"}
-                                style={{
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  minWidth: 80,
-                                  padding: 12,
-                                  paddingLeft: 12,
-                                  paddingRight: 12,
-                                  // paddingBottom: 0,
-                                  borderRadius: 10,
-                                }}
-                              >
-                                {language}
-                              </Badge>
-                            ))}
-                        </HStack>
-                      </ScrollView>
-                    </VStack>
-                  </HStack>
-                </Pressable>
-              ))}
-            </View>
-          )}
-        </ScrollView>
       </GestureRecognizer>
     </>
   );
@@ -265,7 +306,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "scroll",
     // justifyContent: "center",
-    backgroundColor: "#ffe4b8",
   },
   title: {
     fontSize: 20,

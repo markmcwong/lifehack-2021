@@ -70,7 +70,11 @@ export const ChatListScreen = ({ navigation }) => {
         paddingBottom={5}
         backgroundColor="white"
       >
-        <Text color="#FF7200" fontWeight="500" fontSize={26}>
+        <Text
+          color={user.isYouth ? "#FF7200" : "#78C9A7"}
+          fontWeight="500"
+          fontSize={26}
+        >
           Chats
         </Text>
       </HStack>
@@ -94,19 +98,34 @@ export const ChatListScreen = ({ navigation }) => {
                       paddingBottom={5}
                       justifyContent="space-between"
                     >
-                      <HStack>
+                      <HStack w="70%">
                         <Avatar
                           size="lg"
                           source={{
                             uri: "https://wallpaperaccess.com/full/317501.jpg",
                           }}
                         ></Avatar>
-                        <VStack px={3} py={2.5} justifyContent="space-between">
+                        <VStack
+                          px={3}
+                          py={2.5}
+                          w="80%"
+                          justifyContent="space-between"
+                        >
                           <Text fontSize={18} fontWeight="300">
                             {conversation.name}
                           </Text>
-                          <Text fontWeight="300" color="gray.400">
-                            {groups[index].lastText}
+                          <Text
+                            // numberOfLines={1}
+                            fontSize={12}
+                            // width="70%"
+                            // ellipsizeMode="tail"
+                            fontWeight="300"
+                            color="gray.400"
+                            // style={{ flex: 1 }}
+                          >
+                            {groups[index].lastText.length > 20
+                              ? groups[index].lastText.substring(0, 30) + "..."
+                              : groups[index].lastText}
                             {/* {groups[index].id} */}
                           </Text>
                         </VStack>

@@ -145,6 +145,7 @@ const selectStartingLanguage = (props: any) => {
             right={10}
             onPress={() => {
               setUserMotherTongue(language, user.uid);
+              props.navigation.navigate("selectFamiliarLang");
             }}
             icon={
               <Icon

@@ -140,8 +140,7 @@ const selectInterests = (props: any) => {
           <Pressable
             onPress={async () => {
               await setUserType(false, user.uid);
-
-              props.navigation.navigate("PersonDetailScreen");
+              props.navigation.navigate("selfIntroduction");
             }}
             // bg="#08797b"
             borderColor="#08797b"
@@ -185,7 +184,7 @@ const selectInterests = (props: any) => {
           <Pressable
             onPress={async () => {
               await setUserType(true, user.uid);
-              props.navigation.navigate("PersonDetailScreen");
+              props.navigation.navigate("selfIntroduction");
             }}
             borderColor="#F5A623"
             borderWidth={3}

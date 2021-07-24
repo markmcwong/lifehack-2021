@@ -2,7 +2,7 @@ import * as actions from "./actions";
 import { addDepositRecord } from "../services/firestore";
 
 const initialState = {
-  user: { name: null, uid: null },
+  user: { name: null, uid: null, isNewUser: false, isYouth: null },
   coordinates: null,
   location: null,
   form: {
@@ -14,7 +14,7 @@ const initialState = {
 };
 
 export default (state = initialState, action: any) => {
-  // console.log(state);
+  console.log(state);
   switch (action.type) {
     case actions.LOGIN:
       return {
@@ -23,18 +23,25 @@ export default (state = initialState, action: any) => {
           ...state.user,
           name: action.userName ?? state.user.name,
           uid: action.uid,
+          isNewUser: action.isNewUser,
+          // isYouth: action.isYouth,
         },
       };
     case actions.LOGOUT:
       return {
         ...state,
-        user: { name: null, uid: null },
+        user: { name: null, uid: null, isNewUser: false, isYouth: false },
       };
-    case actions.LOAD_LOGGED_IN:
+    case actions.FINISH_ONBOARD:
       return {
         ...state,
-        user: { name: action.userName, uid: action.uid },
+        user: { ...state.user, isNewUser: false },
       };
+    // case actions.LOAD_LOGGED_IN:
+    //   return {
+    //     ...state,
+    //     user: { name: action.userName, uid: action.uid, isNewUser: false, },
+    //   };
     case actions.SELECT_LOCATION:
       console.log(action.location);
       return {
@@ -82,6 +89,7 @@ export default (state = initialState, action: any) => {
         user: {
           ...state.user,
           name: action.name,
+          isYouth: action.isYouth,
         },
       };
     default:
